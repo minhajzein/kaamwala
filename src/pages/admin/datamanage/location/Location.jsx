@@ -2,14 +2,17 @@ import React, { useState } from 'react'
 import { BiEdit, BiSearch } from 'react-icons/bi'
 import Modal from '../../../../components/Modal'
 import LocationForm from './LocationForm'
-import { useGetAllLocationsQuery } from '../../../../redux/admin/api-slices/locationApiSlice'
+import {
+	useAddLocationMutation,
+	useGetAllLocationsQuery,
+} from '../../../../redux/admin/api-slices/locationApiSlice'
+import { toast } from 'react-toastify'
 
 //imports......................................................................................
 
 const Location = () => {
-	const [locations, setLocations] = useState([])
 	const { data, error, isLoading } = useGetAllLocationsQuery()
-	console.log(data, error)
+	const [addLocation, { isLoading: adding }] = useAddLocationMutation()
 
 	const [currentPage, setCurrentPage] = useState(1)
 	const [itemsPerPage] = useState(10)
@@ -44,15 +47,19 @@ const Location = () => {
 		setModalVisible(true)
 	}
 
-	const handleSubmit = data => {
+	const handleSubmit = async data => {
 		if (currentItem) {
 			// Update logic here
-			setLocations(locations.map(loc => (loc === currentItem ? data : loc)))
 		} else {
 			// Create logic here
-			setLocations([...locations, data])
+			const response = await addLocation(data)
+			if (response?.data) {
+				console.log(response)
+				setModalVisible(false)
+			} else {
+				toast.error(response.error.data.errors.location[0])
+			}
 		}
-		setModalVisible(false)
 	}
 
 	const handleClose = () => {
@@ -100,7 +107,7 @@ const Location = () => {
 						{currentItems?.map((item, index) => (
 							<tr key={index}>
 								<td className='px-4 py-4 border-b border-gray-200 bg-white text-sm'>
-									{item.district}
+									{item.district_name}
 								</td>
 								<td className='px-4 py-4 border-b border-gray-200 bg-white text-sm'>
 									{item.location}
@@ -140,6 +147,7 @@ const Location = () => {
 							initialData={currentItem}
 							onSubmit={handleSubmit}
 							handleClose={handleClose}
+							districts={data?.districts}
 						/>
 					}
 					size='big'

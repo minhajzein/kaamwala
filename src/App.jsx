@@ -14,7 +14,19 @@ import PublicRoute from './routes/public/PublicRoute'
 const App = () => {
 	return (
 		<Provider store={store}>
-			<ToastContainer position='top-center' theme='dark' autoClose={1500} />
+			<ToastContainer
+				position='top-center'
+				autoClose={1500}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+				theme='dark'
+				transition:Slide
+			/>
 			<BrowserRouter>
 				<Routes>
 					<Route path='/admin/*' element={<AdminRoute />} />

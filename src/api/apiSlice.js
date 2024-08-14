@@ -24,7 +24,16 @@ const baseQuery = fetchBaseQuery({
 const apiSlice = createApi({
     reducerPath: 'apiService',
     baseQuery: baseQuery,
-    tagTypes: ['Dashboard', 'User', 'Locations', 'Job-Category', 'Area-Managers'],
+    tagTypes: [
+        'Dashboard',
+        'User',
+        'Employees',
+        'Profile',
+        'Restaurants',
+        'Locations',
+        'Job-Category',
+        'Area-Managers',
+    ],
     endpoints: builder => ({})
 })
 

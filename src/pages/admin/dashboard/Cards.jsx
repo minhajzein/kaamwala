@@ -26,7 +26,42 @@ const cardData = [
 	},
 ]
 
-const Cards = () => {
+const Cards = ({
+	totalAreaManagers,
+	totalEmployees,
+	workingCount,
+	nonWorking,
+}) => {
+	const cardData = [
+		{
+			id: 1,
+			title: 'Total Area Managers',
+			count: totalAreaManagers,
+			icon: FaUsers,
+			color: 'blue',
+		},
+		{
+			id: 2,
+			title: 'Total Staff',
+			count: totalEmployees,
+			icon: FaUserTie,
+			color: 'blue',
+		},
+		{
+			id: 3,
+			title: 'Working Count',
+			count: workingCount,
+			icon: FaUserCheck,
+			color: 'gray',
+		},
+		{
+			id: 4,
+			title: 'Non-Working Count',
+			count: nonWorking,
+			icon: FaUserTimes,
+			color: 'red',
+		},
+	]
 	return (
 		<div>
 			<section className='text-gray-700 body-font bg-gray-100'>

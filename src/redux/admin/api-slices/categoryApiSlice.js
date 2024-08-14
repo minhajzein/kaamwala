@@ -1,5 +1,7 @@
 import apiSlice from "../../../api/apiSlice";
 
+// imports................................................................
+
 const categoryApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
         getAllCategories: builder.query({
@@ -38,4 +40,9 @@ const categoryApiSlice = apiSlice.injectEndpoints({
     })
 })
 
-export const { useGetAllCategoriesQuery, useAddJobCategoryMutation, useEditJobCategoryMutation, useGetSingleCategoryQuery } = categoryApiSlice
+export const {
+    useGetAllCategoriesQuery,
+    useAddJobCategoryMutation,
+    useEditJobCategoryMutation,
+    useGetSingleCategoryQuery
+} = categoryApiSlice

@@ -45,5 +45,7 @@ const managerApiSlice = apiSlice.injectEndpoints({
 
 export const {
     useGetAllAreaManagersQuery,
-    useAddAreaManagerMutation
+    useAddAreaManagerMutation,
+    useEditAreaManagerMutation,
+    useGetSingleAreaManagerQuery
 } = managerApiSlice
