@@ -1,54 +1,45 @@
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-import React, { useState } from 'react'
 import { Select } from 'antd'
-import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
-
+import { useAddAreaManagerMutation } from '../../../redux/admin/api-slices/managerApiSlice'
+import { useGetAllLocationsQuery } from '../../../redux/admin/api-slices/locationApiSlice'
 const { Option } = Select
 
+//imports................................................................
+
 const AddAreaManager = ({ handleClose }) => {
-	const [loadingMessage, setLoadingMessage] = useState(false)
+	const [addAreaManager, { loading: adding }] = useAddAreaManagerMutation()
+	const { data: locations } = useGetAllLocationsQuery()
 
 	const validationSchema = Yup.object({
 		name: Yup.string().required('Full name is required'),
-		contact: Yup.string().required('Contact number is required'),
+		phone: Yup.string().required('Contact number is required'),
 		email: Yup.string()
 			.email('Invalid email address')
 			.required('Email is required'),
-		location: Yup.string().required('Location is required'),
-		address: Yup.number()
-			.positive('Staff count must be positive')
-			.required('Staff count is required'),
-		status: Yup.string().required('Status is required'),
+		location_id: Yup.string().required('Location is required'),
+		address: Yup.string().required('Address is required'),
 	})
 
 	const formik = useFormik({
 		initialValues: {
 			name: '',
-			contact: '',
+			phone: '',
 			email: '',
-			location: '',
+			location_id: '',
 			address: '',
-			status: '',
 		},
 		validationSchema,
-		onSubmit: values => {
-			// setLoadingMessage(true);
-			// const promise = dispatch(CreateAreaManager(values));
-			// promise.then((res) => {
-			//   setLoadingMessage(false);
-			//   if (res.payload.error) {
-			//     toast.error(res.payload.error);
-			//     if (res.payload.errors.email) {
-			//       toast.error(res.payload.errors.email[0]);
-			//     }
-			//   }
-			//   if (res.payload.success) {
-			//     toast.success(res.payload.success);
-			//     handleClose();
-			//   }
-			// });
+		onSubmit: async values => {
+			const response = await addAreaManager(values)
+			if (response?.data?.success) {
+				toast.success(response.data.success)
+				handleClose()
+			} else {
+				toast.error('Area manager creation failed')
+			}
+			console.log(response)
 		},
 	})
 
@@ -83,25 +74,25 @@ const AddAreaManager = ({ handleClose }) => {
 
 					<div className='mb-4'>
 						<label
-							htmlFor='contact'
+							htmlFor='phone'
 							className='block text-gray-700 text-sm font-medium mb-1'
 						>
 							Contact
 						</label>
 						<input
 							type='text'
-							id='contact'
-							{...formik.getFieldProps('contact')}
+							id='phone'
+							{...formik.getFieldProps('phone')}
 							className={`border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none ${
-								formik.touched.contact && formik.errors.contact
+								formik.touched.phone && formik.errors.phone
 									? 'border-red-500'
 									: ''
 							}`}
 							placeholder='Contact Number'
 						/>
-						{formik.touched.contact && formik.errors.contact && (
+						{formik.touched.phone && formik.errors.phone && (
 							<p className='text-red-500 text-xs italic'>
-								{formik.errors.contact}
+								{formik.errors.phone}
 							</p>
 						)}
 					</div>
@@ -139,14 +130,13 @@ const AddAreaManager = ({ handleClose }) => {
 							Location
 						</label>
 						<Select
-							style={{ width: '100%' }}
-							onChange={value => formik.setFieldValue('status', value)}
+							onChange={value => formik.setFieldValue('location_id', value)}
 							placeholder='Select Location'
+							className='w-full'
 						>
-							<Option value='active'>Thalassery</Option>
-							<Option value='deactivated'>Vadakara</Option>
-							<Option value='deactivated'>Kozhikode</Option>
-							<Option value='deactivated'>Manjeri</Option>
+							{locations?.locations.map(loc => (
+								<Option value={loc.id}>{loc.location}</Option>
+							))}
 						</Select>
 						{formik.touched.location && formik.errors.location && (
 							<p className='text-red-500 text-xs italic'>
@@ -154,7 +144,6 @@ const AddAreaManager = ({ handleClose }) => {
 							</p>
 						)}
 					</div>
-
 					<div className='mb-4'>
 						<label
 							htmlFor='address'
@@ -179,23 +168,7 @@ const AddAreaManager = ({ handleClose }) => {
 							</p>
 						)}
 					</div>
-					{/* 
-          <div className="mb-4 hidden">
-            <label htmlFor="status" className="block text-gray-700 text-sm font-medium mb-1">Status</label>
-            <Select
-              style={{ width: '100%' }}
-              onChange={(value) => formik.setFieldValue('status', value)}
-              placeholder="Select Status"
-            >
-              <Option value="active">Active</Option>
-              <Option value="deactivated">Deactivated</Option>
-            </Select>
-            {formik.touched.status && formik.errors.status && (
-              <p className="text-red-500 text-xs italic">{formik.errors.status}</p>
-            )}
-          </div> */}
 				</div>
-
 				<div className='flex justify-end space-x-2 mt-5'>
 					<button
 						type='button'
@@ -205,13 +178,13 @@ const AddAreaManager = ({ handleClose }) => {
 						Close
 					</button>
 					<button
-						disabled={loadingMessage}
+						disabled={adding}
 						type='submit'
 						className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white modalAddBtn hover:modalAddBtnHover ${
-							loadingMessage ? 'animate-pulse' : ''
+							adding ? 'animate-pulse' : ''
 						}`}
 					>
-						{loadingMessage ? 'Adding Area Manager...' : 'Add Area Manager'}
+						{adding ? 'Adding Area Manager...' : 'Add Area Manager'}
 					</button>
 				</div>
 			</form>

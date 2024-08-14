@@ -26,7 +26,9 @@ const locationApiSlice = apiSlice.injectEndpoints({
             query: (id, credentials) => ({
                 url: `/locations/${id}`,
                 method: 'PUT',
-                body: { ...credentials }
+                body: {
+                    ...credentials
+                },
             }),
             invalidatesTags: ['Locations']
         }),

@@ -6,9 +6,7 @@ import recentEmployeesColumns from '../../../components/table/Columns/RecentEmpl
 //imports................................................................................................
 
 const Dashboard = () => {
-	const columns = []
 	const { data, error } = useGetDashboardDataQuery()
-	console.log(data, error)
 
 	return (
 		<div>
@@ -22,6 +20,7 @@ const Dashboard = () => {
 				dataSource={data?.recentEmployees}
 				columns={recentEmployeesColumns}
 				pagination={{ position: ['bottomCenter'] }}
+				rowKey={record => record.id}
 			/>
 		</div>
 	)

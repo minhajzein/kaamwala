@@ -1,9 +1,16 @@
 import { useState, useEffect } from 'react'
+import { CgSpinner } from 'react-icons/cg'
 
 //imports.................................................................
 
-const LocationForm = ({ initialData, onSubmit, handleClose, districts }) => {
-	const [district, setDistrict] = useState(initialData?.district || '')
+const LocationForm = ({
+	initialData,
+	onSubmit,
+	handleClose,
+	districts,
+	isLoading,
+}) => {
+	const [district, setDistrict] = useState(initialData?.district_id || '')
 	const [location, setLocation] = useState(initialData?.location || '')
 
 	const handleSubmit = async e => {
@@ -67,7 +74,7 @@ const LocationForm = ({ initialData, onSubmit, handleClose, districts }) => {
 					type='submit'
 					className='inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2'
 				>
-					Save
+					{isLoading ? <CgSpinner className='m-auto animate-spin' /> : 'Save'}
 				</button>
 			</div>
 		</form>

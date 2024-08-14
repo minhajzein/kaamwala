@@ -30,10 +30,10 @@ const categoryApiSlice = apiSlice.injectEndpoints({
             })
         }),
         editJobCategory: builder.mutation({
-            query: (id, credentials) => ({
-                url: `/job-category/${id}`,
+            query: (credentials) => ({
+                url: `/job-category/${credentials.id}`,
                 method: 'PUT',
-                body: { ...credentials }
+                body: { category: credentials.category }
             }),
             invalidatesTags: ['Job-Category']
         })

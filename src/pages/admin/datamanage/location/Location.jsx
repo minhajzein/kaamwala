@@ -4,6 +4,7 @@ import Modal from '../../../../components/Modal'
 import LocationForm from './LocationForm'
 import {
 	useAddLocationMutation,
+	useEditLocationMutation,
 	useGetAllLocationsQuery,
 } from '../../../../redux/admin/api-slices/locationApiSlice'
 import { toast } from 'react-toastify'
@@ -11,9 +12,9 @@ import { toast } from 'react-toastify'
 //imports......................................................................................
 
 const Location = () => {
-	const { data, error, isLoading } = useGetAllLocationsQuery()
+	const { data } = useGetAllLocationsQuery()
 	const [addLocation, { isLoading: adding }] = useAddLocationMutation()
-
+	const [editLocation, { isLoading: updating }] = useEditLocationMutation()
 	const [currentPage, setCurrentPage] = useState(1)
 	const [itemsPerPage] = useState(10)
 	const [modalVisible, setModalVisible] = useState(false)
@@ -50,20 +51,19 @@ const Location = () => {
 	const handleSubmit = async data => {
 		if (currentItem) {
 			// Update logic here
+			const response = await editLocation(currentItem.id, data)
+
+			console.log(response)
 		} else {
 			// Create logic here
 			const response = await addLocation(data)
 			if (response?.data) {
-				console.log(response)
+				toast.success('Location added successfully')
 				setModalVisible(false)
 			} else {
 				toast.error(response.error.data.errors.location[0])
 			}
 		}
-	}
-
-	const handleClose = () => {
-		setModalVisible(false)
 	}
 
 	return (
@@ -139,15 +139,16 @@ const Location = () => {
 			{modalVisible && (
 				<Modal
 					visibles={modalVisible}
-					onClose={handleClose}
+					onClose={() => setModalVisible(false)}
 					id='location-datamanage-add'
 					title={currentItem ? 'Edit Location' : 'Add Location'}
 					content={
 						<LocationForm
 							initialData={currentItem}
 							onSubmit={handleSubmit}
-							handleClose={handleClose}
+							handleClose={() => setModalVisible(false)}
 							districts={data?.districts}
+							isLoading={adding || updating}
 						/>
 					}
 					size='big'

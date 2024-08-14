@@ -2,29 +2,37 @@ import React, { useState } from 'react'
 import { BiEdit, BiSearch } from 'react-icons/bi'
 import JobCategoryForm from './JobCategoryForm'
 import Modal from '../../../../components/Modal'
+import {
+	useAddJobCategoryMutation,
+	useEditJobCategoryMutation,
+	useGetAllCategoriesQuery,
+} from '../../../../redux/admin/api-slices/categoryApiSlice'
+import { toast } from 'react-toastify'
+
+//imports................................................................
 
 const JobCategory = () => {
-	//   const dispatch = useDispatch();
-	//   const { jobCategories, loading } = useSelector(state => state.jobCategory);
-	const jobCategories = []
+	const { data } = useGetAllCategoriesQuery()
+	const [addCategory, { isLoading: adding }] = useAddJobCategoryMutation()
+	const [editCategory, { isLoading: updating }] = useEditJobCategoryMutation()
 	const [currentPage, setCurrentPage] = useState(1)
 	const [itemsPerPage] = useState(10)
 	const [modalVisible, setModalVisible] = useState(false)
 	const [currentItem, setCurrentItem] = useState(null)
 	const [search, setSearch] = useState('')
 
-	const filteredItems = jobCategories.filter(item =>
-		item.name.toLowerCase().includes(search.toLowerCase())
+	const filteredItems = data?.jobCategories.filter(item =>
+		item.category.toLowerCase().includes(search.toLowerCase())
 	)
 
 	const indexOfLastItem = currentPage * itemsPerPage
 	const indexOfFirstItem = indexOfLastItem - itemsPerPage
-	const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem)
+	const currentItems = filteredItems?.slice(indexOfFirstItem, indexOfLastItem)
 
 	const paginate = pageNumber => setCurrentPage(pageNumber)
 
 	const pageNumbers = []
-	for (let i = 1; i <= Math.ceil(filteredItems.length / itemsPerPage); i++) {
+	for (let i = 1; i <= Math.ceil(filteredItems?.length / itemsPerPage); i++) {
 		pageNumbers.push(i)
 	}
 
@@ -38,8 +46,24 @@ const JobCategory = () => {
 		setModalVisible(true)
 	}
 
-	const handleSubmit = data => {
-		setModalVisible(false)
+	const handleSubmit = async data => {
+		if (currentItem) {
+			const response = await editCategory(data)
+			if (response?.data?.success) {
+				setModalVisible(false)
+				return toast.success(response.data.success)
+			} else {
+				return toast.error('Failed to edit category')
+			}
+		} else {
+			const response = await addCategory(data)
+			if (response?.data?.success) {
+				setModalVisible(false)
+				return toast.success(response.data.success)
+			} else {
+				return toast.error(response.error.data.errors.category[0])
+			}
+		}
 	}
 
 	const handleClose = () => {
@@ -81,12 +105,12 @@ const JobCategory = () => {
 						</tr>
 					</thead>
 					<tbody>
-						{currentItems.map(item => (
+						{currentItems?.map(item => (
 							<tr key={item.id}>
 								<td className='px-4 py-4 border-b border-gray-200 bg-white text-sm'>
-									{item.name}
+									{item.category}
 								</td>
-								<td className='px-4 py-4 border-b border-gray-200 bg-white text-sm flex justify-end items-center'>
+								<td className='px-4 py-4 border-b border-gray-200 bg-white text-sm flex items-center'>
 									<button
 										onClick={() => handleEdit(item)}
 										className='text-indigo-600 hover:text-indigo-900'
@@ -121,6 +145,7 @@ const JobCategory = () => {
 							initialData={currentItem}
 							onSubmit={handleSubmit}
 							onCancel={handleClose}
+							isLoading={adding || updating}
 						/>
 					}
 				/>

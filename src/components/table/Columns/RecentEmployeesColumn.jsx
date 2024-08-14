@@ -1,4 +1,4 @@
-import { Space, Tag } from 'antd'
+import { Tag } from 'antd'
 import { Link } from 'react-router-dom'
 
 const recentEmployeesColumns = [
@@ -6,13 +6,17 @@ const recentEmployeesColumns = [
 		title: 'Name',
 		dataIndex: 'name',
 		key: 'name',
-		render: (_, record) => <Link to={``}>{record.name}</Link>,
+		render: (_, record) => (
+			<Link to={``} className='capitalize'>
+				{record.name}
+			</Link>
+		),
 	},
 	{
 		title: 'Restaurant',
 		dataIndex: 'restaurant',
 		key: 'restaurant',
-		render: text => <a>{text}</a>,
+		render: text => <h1>{text}</h1>,
 	},
 	{
 		title: 'Address',
@@ -23,7 +27,7 @@ const recentEmployeesColumns = [
 		title: 'Experience',
 		dataIndex: 'total_experience',
 		key: 'total_experience',
-		render: experience => <h1 className='text-center'>{experience}</h1>,
+		render: experience => <h1>{experience}+</h1>,
 	},
 	{
 		title: 'Status',
