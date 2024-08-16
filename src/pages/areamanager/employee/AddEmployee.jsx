@@ -6,6 +6,7 @@ import { useAddEmployeeMutation } from '../../../redux/area-manager/api-slices/e
 import { useGetAllCategoriesQuery } from '../../../redux/admin/api-slices/categoryApiSlice'
 import { useGetAllLocationsQuery } from '../../../redux/admin/api-slices/locationApiSlice'
 import { CgSpinner } from 'react-icons/cg'
+import { toast } from 'react-toastify'
 
 const { TextArea } = Input
 
@@ -22,16 +23,19 @@ const validationSchema = Yup.object().shape({
 	phone: Yup.string().required('Phone is required'),
 })
 
-const AddEmployee = () => {
+const AddEmployee = ({ handleClose }) => {
 	const { data: categories } = useGetAllCategoriesQuery()
 	const { data: locations } = useGetAllLocationsQuery()
 	const [addAnEmployee, { isLoading }] = useAddEmployeeMutation()
 
 	const handleSubmit = async values => {
-		console.log('entered in submission')
-
 		const response = await addAnEmployee(values)
-		console.log(response)
+		if (response?.data?.success) {
+			toast.success(response.data.success)
+			handleClose()
+		} else {
+			toast.error('Employee already exists')
+		}
 	}
 	console.log()
 

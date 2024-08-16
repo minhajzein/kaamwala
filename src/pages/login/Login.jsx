@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom'
 const Login = () => {
 	const [login, { isLoading }] = useLoginMutation()
 	const [isShow, setIsShow] = useState(false)
+	const dispatch = useDispatch()
 
 	const navigate = useNavigate()
 	const formik = useFormik({
@@ -28,6 +29,12 @@ const Login = () => {
 				const response = await login(credentials)
 
 				if (response?.error) return toast.error(response.error.data.error)
+				dispatch(
+					setCredentials({
+						token: response.data.token,
+						user: response.data.user,
+					})
+				)
 				localStorage.setItem(
 					'kaamwala-token',
 					JSON.stringify(response.data.token)

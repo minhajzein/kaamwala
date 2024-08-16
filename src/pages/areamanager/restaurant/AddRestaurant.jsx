@@ -5,6 +5,8 @@ import { Select } from 'antd'
 
 const { Option } = Select
 
+//imports................................................................................................
+
 const AddRestaurant = ({ handleClose }) => {
 	const [loadingMessage, setLoadingMessage] = useState(false)
 
@@ -27,23 +29,7 @@ const AddRestaurant = ({ handleClose }) => {
 			status: '',
 		},
 		validationSchema,
-		onSubmit: values => {
-			// setLoadingMessage(true);
-			// const promise = dispatch(CreateAreaManager(values));
-			// promise.then((res) => {
-			//   setLoadingMessage(false);
-			//   if (res.payload.error) {
-			//     toast.error(res.payload.error);
-			//     if (res.payload.errors.email) {
-			//       toast.error(res.payload.errors.email[0]);
-			//     }
-			//   }
-			//   if (res.payload.success) {
-			//     toast.success(res.payload.success);
-			//     handleClose();
-			//   }
-			// });
-		},
+		onSubmit: values => {},
 	})
 
 	return (

@@ -38,11 +38,12 @@ const AddRestaurant = ({ handleClose }) => {
 		onSubmit: async values => {
 			try {
 				const response = await createRestaurant(values)
+
 				if (response?.data?.success) {
 					toast.success(response.data.success)
 					handleClose()
 				} else {
-					toast.error('Restaurant creation failed')
+					toast.error('Restaurant already exists')
 				}
 			} catch (error) {
 				console.error(error)

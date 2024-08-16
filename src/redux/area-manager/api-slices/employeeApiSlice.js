@@ -5,8 +5,8 @@ import apiSlice from "../../../api/apiSlice";
 const employeeApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
         getAllEmployeesUnderAreaManager: builder.query({
-            query: (id) => ({
-                url: `/areamanager/employees/${id}`,
+            query: () => ({
+                url: `/areamanager/employee`,
                 validateStatus: (response) => {
                     return response.status === 200
                 }
@@ -31,18 +31,22 @@ const employeeApiSlice = apiSlice.injectEndpoints({
             invalidatesTags: ['Employees']
         }),
         getSingleEmployeeUnderAreaManager: builder.query({
-            query: () => ({
+            query: (id) => ({
                 url: `/areamanager/employee/${id}`,
-                validateStatus: (response) => {
+                validateStatus: (response, result) => {
                     return response.status === 200
                 }
             }),
-            keepUnusedDataFor: 5
+            keepUnusedDataFor: 5,
+            providesTags: ['Employee']
         }),
-        giveRating: builder.mutation({
-            query: () => ({
-                url: '/areamanager/'
-            })
+        addExperience: builder.mutation({
+            query: (data) => ({
+                url: `/areamanager/employee-experience/${data.id}`,
+                method: 'POST',
+                body: { ...data.credentials }
+            }),
+            invalidatesTags: ['Employees']
         })
     })
 })
@@ -51,5 +55,6 @@ export const {
     useGetAllEmployeesUnderAreaManagerQuery,
     useGetSingleEmployeeUnderAreaManagerQuery,
     useAddEmployeeMutation,
-    useEditEmployeeMutation
+    useEditEmployeeMutation,
+    useAddExperienceMutation
 } = employeeApiSlice

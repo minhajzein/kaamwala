@@ -22,7 +22,7 @@ const AreaManagerRoute = () => {
 						<Route path='/restaurant/profile' element={<RestaurantProfile />} />
 						<Route path='/profile' element={<Profile />} />
 						<Route path='/employee' element={<Employee />} />
-						<Route path='/employee/profile' element={<ViewEmployee />} />
+						<Route path='/employee/profile/:id' element={<ViewEmployee />} />
 						<Route path='/settings' element={<Settings />} />
 					</Route>
 				</Route>

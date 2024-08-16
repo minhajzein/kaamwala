@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import DataTable from '../../../components/table/DataTable'
 import { RestaurantColumns } from '../../../components/table/Columns/RestaurantColumn'
 import { useGetAllRestaurantsQuery } from '../../../redux/admin/api-slices/restaurantApiSlice'
+import Modal from '../../../components/Modal'
 
 //imports................................................................
 
@@ -35,6 +36,21 @@ const Restaurant = () => {
 				filterColumn2='location'
 				title={'Restaurant'}
 			/>
+			{showEditModal && (
+				<Modal
+					visibles={showEditModal}
+					onClose={handleCloseEditModal}
+					id='edit-Madrasa-admin'
+					title='Edit Madrasa'
+					content={
+						<UpdateRestaurant
+							handleClose={handleCloseEditModal}
+							restaurant={restaurant}
+						/>
+					}
+					size='big'
+				/>
+			)}
 		</>
 	)
 }
