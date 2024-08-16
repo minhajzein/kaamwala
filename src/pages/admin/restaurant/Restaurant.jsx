@@ -10,6 +10,7 @@ import { useGetAllRestaurantsQuery } from '../../../redux/admin/api-slices/resta
 
 const Restaurant = () => {
 	const [showEditModal, setShowEditModal] = useState(false)
+	const [restaurant, setRestaurant] = useState(null)
 	const navigate = useNavigate()
 	const { data } = useGetAllRestaurantsQuery()
 
@@ -18,18 +19,17 @@ const Restaurant = () => {
 	}
 
 	const handleView = id => {
-		//    dispatch(viewAdminMadrasa(id))
 		navigate('/admin/restaurant/profile')
 	}
-	const handleEdit = id => {
-		//    dispatch(editAdminMadrasa(id))
+	const handleEdit = data => {
+		setRestaurant(data)
 		setShowEditModal(true)
 	}
 
 	const columns = RestaurantColumns(handleView, handleEdit)
 
 	return (
-		<div>
+		<>
 			<DataTable
 				data={data?.restaurents}
 				columns={columns}
@@ -43,11 +43,16 @@ const Restaurant = () => {
 					onClose={handleCloseEditModal}
 					id='edit-Madrasa-admin'
 					title='Edit Madrasa'
-					content={<UpdateRestaurant handleClose={handleCloseEditModal} />}
+					content={
+						<UpdateRestaurant
+							handleClose={handleCloseEditModal}
+							restaurant={restaurant}
+						/>
+					}
 					size='big'
 				/>
 			)}
-		</div>
+		</>
 	)
 }
 

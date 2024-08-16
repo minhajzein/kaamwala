@@ -42,14 +42,16 @@ const RestaurantColumns = (viewActionClick, editActionClick) => [
 						<FaRegEye className='text-lg' />
 					</button>
 				</Tooltip>
-				<Tooltip title='Edit' placement='top'>
-					<button
-						onClick={() => editActionClick(row.original)}
-						className='flex items-center justify-center p-1 bg-green-100 text-zinc-800 rounded border border-zinc-400 hover:bg-green-50 focus:outline-none focus:ring-2  text-xs md:text-sm'
-					>
-						<RiEditLine className='text-lg' />
-					</button>
-				</Tooltip>
+				{window.location.pathname === '/admin/restaurant' && (
+					<Tooltip title='Edit' placement='top'>
+						<button
+							onClick={() => editActionClick(row.original)}
+							className='flex items-center justify-center p-1 bg-green-100 text-zinc-800 rounded border border-zinc-400 hover:bg-green-50 focus:outline-none focus:ring-2  text-xs md:text-sm'
+						>
+							<RiEditLine className='text-lg' />
+						</button>
+					</Tooltip>
+				)}
 			</div>
 		),
 	},

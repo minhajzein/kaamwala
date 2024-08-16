@@ -1,167 +1,252 @@
-import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import { Input, Button, Upload, Radio } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { Formik, Form, Field, ErrorMessage } from 'formik'
+import * as Yup from 'yup'
+import { Input, Button, Upload, Radio, Select } from 'antd'
+import { UploadOutlined } from '@ant-design/icons'
+import { useAddEmployeeMutation } from '../../../redux/area-manager/api-slices/employeeApiSlice'
+import { useGetAllCategoriesQuery } from '../../../redux/admin/api-slices/categoryApiSlice'
+import { useGetAllLocationsQuery } from '../../../redux/admin/api-slices/locationApiSlice'
+import { CgSpinner } from 'react-icons/cg'
 
-const { TextArea } = Input;
+const { TextArea } = Input
+
+//imports................................................................
 
 const validationSchema = Yup.object().shape({
-  photo: Yup.mixed().required('Photo is required'),
-  adharFront: Yup.mixed().required('Adhar front is required'),
-  adharBack: Yup.mixed().required('Adhar back is required'),
-  name: Yup.string().required('Name is required'),
-  job: Yup.string().required('Job is required'),
-  address: Yup.string().required('Address is required'),
-  location: Yup.string().required('Location is required'),
-  phone: Yup.string().required('Phone is required'),
-  status: Yup.string().required('Status is required'),
-  totalExperience: Yup.number().required('Total working experience is required'),
-});
+	photo: Yup.mixed().required('Photo is required'),
+	aadhar_front: Yup.mixed().required('Adhar front is required'),
+	aadhar_back: Yup.mixed().required('Adhar back is required'),
+	name: Yup.string().required('Name is required'),
+	job_category_id: Yup.string().required('Job is required'),
+	address: Yup.string().required('Address is required'),
+	location_id: Yup.string().required('Location is required'),
+	phone: Yup.string().required('Phone is required'),
+})
 
 const AddEmployee = () => {
-  const handleSubmit = (values) => {
-    console.log('Form Values', values);
-  };
+	const { data: categories } = useGetAllCategoriesQuery()
+	const { data: locations } = useGetAllLocationsQuery()
+	const [addAnEmployee, { isLoading }] = useAddEmployeeMutation()
 
-  const normFile = (e) => {
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  };
+	const handleSubmit = async values => {
+		console.log('entered in submission')
 
-  return (
-    <div className=" mx-auto p-4 bg-white rounded-lg shadow-md">
-      <Formik
-        initialValues={{
-          photo: null,
-          adharFront: null,
-          adharBack: null,
-          name: '',
-          job: '',
-          address: '',
-          location: '',
-          phone: '',
-          status: '',
-          totalExperience: 0,
-        }}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        {({ setFieldValue }) => (
-          <Form>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Photo</label>
-                <Field name="photo">
-                  {({ field }) => (
-                    <Upload
-                      name="photo"
-                      maxCount={1}
-                      listType="picture"
-                      beforeUpload={() => false}
-                      onChange={(info) => setFieldValue('photo', info.file)}
-                    >
-                      <Button icon={<UploadOutlined />}>Upload</Button>
-                    </Upload>
-                  )}
-                </Field>
-                <ErrorMessage name="photo" component="div" className="text-red-500 text-xs mt-1" />
-              </div>
+		const response = await addAnEmployee(values)
+		console.log(response)
+	}
+	console.log()
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Adhar Front</label>
-                <Field name="adharFront">
-                  {({ field }) => (
-                    <Upload
-                      name="adharFront"
-                      maxCount={1}
-                      listType="picture"
-                      beforeUpload={() => false}
-                      onChange={(info) => setFieldValue('adharFront', info.file)}
-                    >
-                      <Button icon={<UploadOutlined />}>Upload</Button>
-                    </Upload>
-                  )}
-                </Field>
-                <ErrorMessage name="adharFront" component="div" className="text-red-500 text-xs mt-1" />
-              </div>
+	return (
+		<div className='flex flex-col overflow-y-auto max-h-screen rounded-lg'>
+			<Formik
+				initialValues={{
+					photo: null,
+					aadhar_front: null,
+					aadhar_back: null,
+					name: '',
+					job_category_id: '',
+					address: '',
+					location_id: '',
+					phone: '',
+					status: '',
+					total_experience: 0,
+					case_details: '',
+				}}
+				validationSchema={validationSchema}
+				onSubmit={handleSubmit}
+			>
+				{({ setFieldValue }) => (
+					<Form>
+						<div className='grid grid-cols-1 gap-2 md:grid-cols-2'>
+							<div>
+								<label className='block text-sm font-medium text-gray-700'>
+									Photo
+								</label>
+								<Field name='photo'>
+									{({ field }) => (
+										<Upload
+											name='photo'
+											maxCount={1}
+											listType='picture'
+											beforeUpload={() => false}
+											onChange={info => setFieldValue('photo', info.file)}
+										>
+											<Button icon={<UploadOutlined />}>Upload</Button>
+										</Upload>
+									)}
+								</Field>
+								<ErrorMessage
+									name='photo'
+									component='div'
+									className='text-red-500 text-xs mt-1'
+								/>
+							</div>
+							<div>
+								<label className='block text-sm font-medium text-gray-700'>
+									Adhar Front
+								</label>
+								<Field name='aadhar_front'>
+									{({ field }) => (
+										<Upload
+											name='aadhar_front'
+											maxCount={1}
+											listType='picture'
+											beforeUpload={() => false}
+											onChange={info =>
+												setFieldValue('aadhar_front', info.file)
+											}
+										>
+											<Button icon={<UploadOutlined />}>Upload</Button>
+										</Upload>
+									)}
+								</Field>
+								<ErrorMessage
+									name='aadhar_front'
+									component='div'
+									className='text-red-500 text-xs mt-1'
+								/>
+							</div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Adhar Back</label>
-                <Field name="adharBack">
-                  {({ field }) => (
-                    <Upload
-                      name="adharBack"
-                      maxCount={1}
-                      listType="picture"
-                      beforeUpload={() => false}
-                      onChange={(info) => setFieldValue('adharBack', info.file)}
-                    >
-                      <Button icon={<UploadOutlined />}>Upload</Button>
-                    </Upload>
-                  )}
-                </Field>
-                <ErrorMessage name="adharBack" component="div" className="text-red-500 text-xs mt-1" />
-              </div>
+							<div>
+								<label className='block text-sm font-medium text-gray-700'>
+									Adhar Back
+								</label>
+								<Field name='aadhar_back'>
+									{({ field }) => (
+										<Upload
+											name='aadhar_back'
+											maxCount={1}
+											listType='picture'
+											beforeUpload={() => false}
+											onChange={info => setFieldValue('aadhar_back', info.file)}
+										>
+											<Button icon={<UploadOutlined />}>Upload</Button>
+										</Upload>
+									)}
+								</Field>
+								<ErrorMessage
+									name='aadhar_back'
+									component='div'
+									className='text-red-500 text-xs mt-1'
+								/>
+							</div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Name</label>
-                <Field name="name" as={Input} className="mt-1 block w-full p-2 border rounded-md" />
-                <ErrorMessage name="name" component="div" className="text-red-500 text-xs mt-1" />
-              </div>
+							<div>
+								<label className='block text-sm font-medium text-gray-700'>
+									Name
+								</label>
+								<Field
+									name='name'
+									as={Input}
+									className='mt-1 block w-full p-2 border rounded-md'
+								/>
+								<ErrorMessage
+									name='name'
+									component='div'
+									className='text-red-500 text-xs mt-1'
+								/>
+							</div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Job</label>
-                <Field name="job" as={Input} className="mt-1 block w-full p-2 border rounded-md" />
-                <ErrorMessage name="job" component="div" className="text-red-500 text-xs mt-1" />
-              </div>
+							<div>
+								<label className='block text-sm font-medium text-gray-700'>
+									Job
+								</label>
+								<Field name='job_category_id'>
+									{({ field }) => (
+										<Select
+											name='job_category_id'
+											className='w-full'
+											placeholder='Select a Location'
+											onChange={value =>
+												setFieldValue('job_category_id', value)
+											}
+										>
+											{categories?.jobCategories.map(category => (
+												<Option value={category.id}>{category.category}</Option>
+											))}
+										</Select>
+									)}
+								</Field>
+								<ErrorMessage
+									name='job_category_id'
+									component='div'
+									className='text-red-500 text-xs mt-1'
+								/>
+							</div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Address</label>
-                <Field name="address" as={TextArea} className="mt-1 block w-full p-2 border rounded-md" />
-                <ErrorMessage name="address" component="div" className="text-red-500 text-xs mt-1" />
-              </div>
+							<div>
+								<label className='block text-sm font-medium text-gray-700'>
+									Address
+								</label>
+								<Field
+									name='address'
+									as={TextArea}
+									className='mt-1 block w-full p-2 border rounded-md'
+								/>
+								<ErrorMessage
+									name='address'
+									component='div'
+									className='text-red-500 text-xs mt-1'
+								/>
+							</div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Location</label>
-                <Field name="location" as={Input} className="mt-1 block w-full p-2 border rounded-md" />
-                <ErrorMessage name="location" component="div" className="text-red-500 text-xs mt-1" />
-              </div>
+							<div>
+								<label className='block text-sm font-medium text-gray-700'>
+									Location
+								</label>
+								<Field name='location_id'>
+									{({ field }) => (
+										<Select
+											name='location_id'
+											className='w-full'
+											placeholder='Select a Location'
+											onChange={value => setFieldValue('location_id', value)}
+										>
+											{locations?.locations.map(loc => (
+												<Option value={loc.id}>{loc.location}</Option>
+											))}
+										</Select>
+									)}
+								</Field>
+								<ErrorMessage
+									name='location_id'
+									component='div'
+									className='text-red-500 text-xs mt-1'
+								/>
+							</div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Phone</label>
-                <Field name="phone" as={Input} className="mt-1 block w-full p-2 border rounded-md" />
-                <ErrorMessage name="phone" component="div" className="text-red-500 text-xs mt-1" />
-              </div>
+							<div>
+								<label className='block text-sm font-medium text-gray-700'>
+									Phone
+								</label>
+								<Field
+									name='phone'
+									as={Input}
+									className='mt-1 block w-full p-2 border rounded-md'
+								/>
+								<ErrorMessage
+									name='phone'
+									component='div'
+									className='text-red-500 text-xs mt-1'
+								/>
+							</div>
+						</div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Status</label>
-                <Field name="status" as={Radio.Group} className="mt-1 block w-full">
-                  <Radio value="available">Available</Radio>
-                  <Radio value="not_available">Not Available</Radio>
-                </Field>
-                <ErrorMessage name="status" component="div" className="text-red-500 text-xs mt-1" />
-              </div>
+						<Button
+							type='primary'
+							htmlType='submit'
+							className='w-full bg-blue-600 mt-2 text-white flex hover:bg-blue-700'
+						>
+							{isLoading ? (
+								<CgSpinner className='m-auto animate-spin' />
+							) : (
+								'Submit'
+							)}
+						</Button>
+					</Form>
+				)}
+			</Formik>
+		</div>
+	)
+}
 
-      
-
-              <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700">Total Working Experience (years)</label>
-                <Field name="totalExperience" as={Input} type="number" className="mt-1 block w-full p-2 border rounded-md" />
-                <ErrorMessage name="totalExperience" component="div" className="text-red-500 text-xs mt-1" />
-              </div>
-            </div>
-
-            <div className="mt-6">
-              <Button type="primary" htmlType="submit" className="w-full bg-blue-600 text-white hover:bg-blue-700">Submit</Button>
-            </div>
-          </Form>
-        )}
-      </Formik>
-    </div>
-  );
-};
-
-export default AddEmployee;
+export default AddEmployee

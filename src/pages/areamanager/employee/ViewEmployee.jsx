@@ -1,14 +1,20 @@
-import React from 'react'
 import avatar from '/Images/avatar.jpg'
 import { GoDotFill } from 'react-icons/go'
 import { MdMyLocation, MdOutlineWatchLater, MdSmartphone } from 'react-icons/md'
 import { IoLocation } from 'react-icons/io5'
-import { FaCircleDot } from 'react-icons/fa6'
-import { Rate } from 'antd'
+import { Modal, Rate, DatePicker, Select, Radio } from 'antd'
+const { RangePicker } = DatePicker
 import { FaGraduationCap } from 'react-icons/fa'
 import JobExperienceTimeline from '../../../components/common/JobExperienseTimeline'
+import { useState } from 'react'
+import { useFormik } from 'formik'
+import { useGetAllRestaurantsQuery } from '../../../redux/admin/api-slices/restaurantApiSlice'
 
 const ViewEmployee = () => {
+	const { data } = useGetAllRestaurantsQuery()
+
+	const formik = useFormik({ initialValues: { restaurant_id: '' } })
+	const [showModal, setShowModal] = useState(false)
 	const skills = ['Shawarma Maker', 'Chineese food', 'Arabic Dish']
 	return (
 		<div className='p-5'>
@@ -56,7 +62,7 @@ const ViewEmployee = () => {
 							</div>
 						</div>
 					</div>
-					<div className='mt-2 flex flex-col'>
+					<div className='mt-2 flex flex-col justify-between'>
 						<div className='text-green-500 flex gap-1 items-center justify-end'>
 							<GoDotFill />
 							Available for hiring
@@ -93,6 +99,12 @@ const ViewEmployee = () => {
 								</div>
 							</div>
 						</div>
+						<button
+							onClick={() => setShowModal(true)}
+							className='capitalize border rounded p-2 border-black bg-gray-200'
+						>
+							add experience
+						</button>
 					</div>
 				</div>
 			</div>
@@ -103,6 +115,73 @@ const ViewEmployee = () => {
 				</div>
 				<JobExperienceTimeline />
 			</div>
+			<Modal
+				open={showModal}
+				footer={[
+					<button
+						onClick={() => setShowModal(false)}
+						className='rounded mr-2 border border-red-500 text-red-500 py-1 px-2'
+					>
+						close
+					</button>,
+					<button
+						onClick={() => setShowModal(false)}
+						className='rounded border border-green-500 text-green-500 py-1 px-2'
+					>
+						save
+					</button>,
+				]}
+				closeIcon={false}
+				onCancel={() => setShowModal(false)}
+			>
+				<div className='w-full flex flex-col gap-2'>
+					<Select className='' placeholder='Select a Restaurant'>
+						{data?.restaurents.map(res => (
+							<Select.Option value={res.id} key={res.id}>
+								{res.restaurent_name}
+							</Select.Option>
+						))}
+					</Select>
+					<RangePicker
+						onChange={(value, dateString) => {
+							console.log(value)
+							console.log(dateString)
+						}}
+					/>
+					<h1 className='capitalize underline'>Ratings</h1>
+					<div className='flex w-full justify-between'>
+						<h1>Hygiene</h1>
+						<hr className='border' />
+						<Rate />
+					</div>
+					<div className='flex w-full justify-between'>
+						<h1>Wastage Control</h1>
+						<hr className='border' />
+						<Rate />
+					</div>
+					<div className='flex w-full justify-between'>
+						<h1>Communication</h1>
+						<hr className='border' />
+						<Rate />
+					</div>
+					<div className='flex w-full justify-between'>
+						<h1>Attendance</h1>
+						<hr className='border' />
+						<Rate />
+					</div>
+					<div className='flex w-full justify-between'>
+						<h1>Productivity</h1>
+						<hr className='border' />
+						<Rate />
+					</div>
+					<h1 className='capitalize underline'>Case Details</h1>
+					<Radio.Group onChange={() => {}}>
+						<Radio value={1}>yes</Radio>
+						<Radio value={2}>no</Radio>
+					</Radio.Group>
+					<textarea className='border rounded outline-none p-2' />
+				</div>
+			</Modal>
 		</div>
 	)
 }

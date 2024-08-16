@@ -4,7 +4,6 @@ import { Select } from 'antd'
 import { toast } from 'react-toastify'
 import { useAddAreaManagerMutation } from '../../../redux/admin/api-slices/managerApiSlice'
 import { useGetAllLocationsQuery } from '../../../redux/admin/api-slices/locationApiSlice'
-const { Option } = Select
 
 //imports................................................................
 
@@ -37,9 +36,8 @@ const AddAreaManager = ({ handleClose }) => {
 				toast.success(response.data.success)
 				handleClose()
 			} else {
-				toast.error('Area manager creation failed')
+				toast.error('Area manager is already exists')
 			}
-			console.log(response)
 		},
 	})
 
@@ -135,7 +133,7 @@ const AddAreaManager = ({ handleClose }) => {
 							className='w-full'
 						>
 							{locations?.locations.map(loc => (
-								<Option value={loc.id}>{loc.location}</Option>
+								<Select.Option value={loc.id}>{loc.location}</Select.Option>
 							))}
 						</Select>
 						{formik.touched.location && formik.errors.location && (

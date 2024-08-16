@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom'
 const Login = () => {
 	const [login, { isLoading }] = useLoginMutation()
 	const [isShow, setIsShow] = useState(false)
-	const dispatch = useDispatch()
+
 	const navigate = useNavigate()
 	const formik = useFormik({
 		initialValues: {
@@ -26,6 +26,7 @@ const Login = () => {
 		onSubmit: async credentials => {
 			try {
 				const response = await login(credentials)
+
 				if (response?.error) return toast.error(response.error.data.error)
 				localStorage.setItem(
 					'kaamwala-token',

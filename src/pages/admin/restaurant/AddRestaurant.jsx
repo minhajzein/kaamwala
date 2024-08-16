@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { Select } from 'antd'
 import { useAddRestaurantMutation } from '../../../redux/admin/api-slices/restaurantApiSlice'
 import { useGetAllLocationsQuery } from '../../../redux/admin/api-slices/locationApiSlice'
+import { toast } from 'react-toastify'
 
 const { Option } = Select
 
@@ -14,30 +15,35 @@ const AddRestaurant = ({ handleClose }) => {
 	const { data: locations } = useGetAllLocationsQuery()
 
 	const validationSchema = Yup.object({
-		restaurent_name: Yup.string().required('Full owner_name is required'),
+		restaurent_name: Yup.string().required('Full name is required'),
 		contact: Yup.string().required('Contact number is required'),
 		email: Yup.string()
 			.email('Invalid email address')
 			.required('Email is required'),
 		location_id: Yup.string().required('Location is required'),
 		address: Yup.string().required('address is required'),
-		owner_name: Yup.string().required('Owner owner_name is required'),
+		owner_name: Yup.string().required('Owner name is required'),
 	})
 
 	const formik = useFormik({
 		initialValues: {
 			restaurent_name: '',
-			contact: '',
 			email: '',
 			location_id: '',
 			address: '',
 			owner_name: '',
+			contact: '',
 		},
 		validationSchema,
 		onSubmit: async values => {
 			try {
 				const response = await createRestaurant(values)
-				console.log(response)
+				if (response?.data?.success) {
+					toast.success(response.data.success)
+					handleClose()
+				} else {
+					toast.error('Restaurant creation failed')
+				}
 			} catch (error) {
 				console.error(error)
 			}
@@ -171,7 +177,7 @@ const AddRestaurant = ({ handleClose }) => {
 					</div>{' '}
 					<div className='mb-4'>
 						<label
-							htmlFor='location'
+							htmlFor='location_id'
 							className='block text-gray-700 text-sm font-medium mb-1'
 						>
 							Location
@@ -185,9 +191,9 @@ const AddRestaurant = ({ handleClose }) => {
 								<Option value={loc.id}>{loc.location}</Option>
 							))}
 						</Select>
-						{formik.touched.location && formik.errors.location && (
+						{formik.touched.location_id && formik.errors.location_id && (
 							<p className='text-red-500 text-xs italic'>
-								{formik.errors.location}
+								{formik.errors.location_id}
 							</p>
 						)}
 					</div>

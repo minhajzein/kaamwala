@@ -8,7 +8,7 @@ function AreaManagerAuth() {
 	const token = JSON.parse(localStorage.getItem('kaamwala-token'))
 
 	return token &&
-		jwtDecode(token).role === 'area-manager' &&
+		jwtDecode(token).role === 'area_manager' &&
 		new Date().getTime() < jwtDecode(token).exp * 1000 ? (
 		<Outlet />
 	) : (

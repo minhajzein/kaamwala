@@ -66,25 +66,25 @@ const Navbar = ({ type }) => {
 									<div
 										onClick={() => {
 											type == 'areamanager'
-												? navigate('/areamanager/profile')
+												? navigate('/area-manager/profile')
 												: alert('its admin page')
 										}}
-										className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer focus:bg-gray-100'
+										className='flex justify-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer focus:bg-gray-100'
 									>
 										Your Profile
 									</div>
 								</div>
 								<div className='py-1'>
-									<a
-										href='#'
+									<button
 										onClick={() => {
-											localStorage.removeItem('token')
+											localStorage.removeItem('kaamwala-token')
+											localStorage.removeItem('kaamwala-user')
 											navigate('/login')
 										}}
-										className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100'
+										className='block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100'
 									>
 										Logout
-									</a>
+									</button>
 								</div>
 							</div>
 						</div>

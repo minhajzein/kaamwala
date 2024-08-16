@@ -6,9 +6,11 @@ import Modal from '../../../components/Modal'
 import EditAreaManager from './EditAreaManager'
 import { useGetAllAreaManagersQuery } from '../../../redux/admin/api-slices/managerApiSlice'
 
+//imports................................................................
+
 const AreaManager = () => {
 	const [showEditModal, setShowEditModal] = useState(false)
-	const [areaManager, setAreaManager] = useState(null)
+	const [currentAreaManager, setCurrentAreaManager] = useState(null)
 	const navigate = useNavigate()
 	const { data } = useGetAllAreaManagersQuery()
 
@@ -18,17 +20,17 @@ const AreaManager = () => {
 
 	const handleView = id => {
 		navigate('/admin/areamanager/profile')
-  }
-  
+	}
+
 	const handleEdit = data => {
-		setAreaManager(data)
+		setCurrentAreaManager(data)
 		setShowEditModal(true)
 	}
 
 	const columns = AreaManagerColumns(handleView, handleEdit)
 
 	return (
-		<div>
+		<>
 			<DataTable
 				data={data?.areaMangers}
 				columns={columns}
@@ -45,13 +47,13 @@ const AreaManager = () => {
 					content={
 						<EditAreaManager
 							handleClose={handleCloseEditModal}
-							areaManager={areaManager}
+							areaManager={currentAreaManager}
 						/>
 					}
 					size='big'
 				/>
 			)}
-		</div>
+		</>
 	)
 }
 
