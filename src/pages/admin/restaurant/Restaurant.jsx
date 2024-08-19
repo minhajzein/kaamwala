@@ -18,9 +18,10 @@ const Restaurant = () => {
 		setShowEditModal(false)
 	}
 
-	const handleView = id => {
-		navigate('/admin/restaurant/profile')
+	const handleView = data => {
+		navigate(`/admin/restaurant/profile/${data.id}`)
 	}
+
 	const handleEdit = data => {
 		setRestaurant(data)
 		setShowEditModal(true)

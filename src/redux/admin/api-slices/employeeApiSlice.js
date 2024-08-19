@@ -4,7 +4,7 @@ import apiSlice from "../../../api/apiSlice";
 
 const employeeApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
-        getAllEmployess: builder.query({
+        getAllEmployees: builder.query({
             query: () => ({
                 url: '/employee',
                 validateStatus: (response) => {
@@ -17,7 +17,7 @@ const employeeApiSlice = apiSlice.injectEndpoints({
         getSingleEmployee: builder.query({
             query: (id) => ({
                 url: `/employee/${id}`,
-                validateStatus: (response) => {
+                validateStatus: (response, result) => {
                     return response.status === 200
                 }
             }),
@@ -27,5 +27,5 @@ const employeeApiSlice = apiSlice.injectEndpoints({
 })
 
 
-export const { useGetAllEmployessQuery, useGetSingleEmployeeQuery } = employeeApiSlice
+export const { useGetAllEmployeesQuery, useGetSingleEmployeeQuery } = employeeApiSlice
 

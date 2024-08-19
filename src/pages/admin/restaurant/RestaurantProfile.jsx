@@ -1,17 +1,22 @@
 import food from '/Images/food.jpg'
-import { GoDotFill } from 'react-icons/go'
 import {
 	MdMyLocation,
 	MdOutlineMailOutline,
-	MdOutlineWatchLater,
 	MdSmartphone,
 } from 'react-icons/md'
 import { IoLocation } from 'react-icons/io5'
 import { FaGraduationCap } from 'react-icons/fa'
 import EmployeeCard from '../../../components/common/EmployeeCard'
+import { useParams } from 'react-router-dom'
+import { useGetSingleRestaurantQuery } from '../../../redux/admin/api-slices/restaurantApiSlice'
+
+//imports.....................................................................................
 
 const RestaurantProfile = () => {
-	const skills = ['Shawarma Maker', 'Chineese food', 'Arabic Dish']
+	const { id } = useParams()
+	const { data } = useGetSingleRestaurantQuery(id)
+	console.log(data)
+
 	const employee = [
 		{
 			name: 'Muhammed Shaikh Zahid U',
@@ -42,30 +47,32 @@ const RestaurantProfile = () => {
 					<div className='p-2'>
 						<div className='flex flex-col lg:flex-row justify-between'>
 							<div>
-								<div className='text-2xl'>MRA Restaurant And Backery</div>
+								<div className='text-2xl'>
+									{data?.restaurent.restaurent_name}
+								</div>
 								<div className='text-gray-600'>Vadakara</div>
 							</div>
 						</div>
 						<div className='grid grid-cols-1 sm:grid-cols-3 gap-2 w-full pt-4 text-gray-600'>
 							<div className='flex gap-2 items-center'>
 								<MdMyLocation />
-								Owner Name
+								{data?.restaurent.owner_name}
 							</div>
 							<div className='flex gap-2 items-center'>
 								<MdMyLocation />
-								Opposite New Bus Stand
+								{data?.restaurent.address}
 							</div>
 							<div className='flex gap-2 items-center'>
 								<IoLocation />
-								Kozhikode
+								{data?.restaurent.location_name}
 							</div>
 							<div className='flex gap-2 items-center'>
 								<MdOutlineMailOutline />
-								mra_restaurant@gmail.com
+								{data?.restaurent.email}
 							</div>
 							<div className='flex gap-2 items-center'>
 								<MdSmartphone />
-								9207738383
+								{data?.restaurent.contact}
 							</div>
 						</div>
 					</div>

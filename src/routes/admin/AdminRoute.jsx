@@ -24,10 +24,13 @@ const AdminRoute = () => {
 						<Route path='/areamanager' element={<AreaManager />} />
 						<Route path='/areamanager/profile' element={<ViewAreaManager />} />
 						<Route path='/restaurant' element={<Restaurant />} />
-						<Route path='/restaurant/profile' element={<RestaurantProfile />} />
+						<Route
+							path='/restaurant/profile/:id'
+							element={<RestaurantProfile />}
+						/>
 						<Route path='/staffs' element={<Staffs />} />
 						<Route path='/staff/add' element={<AddStaffs />} />
-						<Route path='/staff/profile' element={<ViewStaffs />} />
+						<Route path='/staff/profile/:id' element={<ViewStaffs />} />
 						<Route path='/settings' element={<Settings />} />
 					</Route>
 				</Route>

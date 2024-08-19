@@ -29,7 +29,7 @@ const ViewEmployee = () => {
 				<div className='grid grid-cols-1 lg:grid-cols-[1fr,3fr,2fr] gap-4'>
 					<div className='rounded-md'>
 						<img
-							src={`https://kaam-wala.grohance.com/${data.employees?.photo}`}
+							src={`https://kaam-wala.grohance.com/api/${data.employees?.photo}`}
 							className='rounded-md w-48 p-2 border-2'
 							alt=''
 						/>

@@ -1,15 +1,22 @@
-import React from 'react'
 import avatar from '/Images/avatar.jpg'
 import { GoDotFill } from 'react-icons/go'
 import { MdMyLocation, MdOutlineWatchLater, MdSmartphone } from 'react-icons/md'
 import { IoLocation } from 'react-icons/io5'
-import { Rate } from 'antd'
 import { FaGraduationCap } from 'react-icons/fa'
 import JobExperienceTimeline from '../../../components/common/JobExperienseTimeline'
+import { useGetSingleEmployeeQuery } from '../../../redux/admin/api-slices/employeeApiSlice'
+import { useParams } from 'react-router-dom'
 
 //imports................................................................
 
 const ViewStaffs = ({ employee }) => {
+	const { id } = useParams()
+	const { data, isSuccess } = useGetSingleEmployeeQuery(id)
+
+	if (employee === undefined && isSuccess) {
+		employee = data.employees
+	}
+
 	return (
 		<div className='p-4'>
 			<div className='bg-white p-5 rounded-md border'>
@@ -24,12 +31,12 @@ const ViewStaffs = ({ employee }) => {
 					<div className='p-2'>
 						<div className='flex flex-col lg:flex-row justify-between'>
 							<div>
-								<div className='text-2xl'>{employee.name}</div>
-								<div className='text-gray-600'>{employee.job_category}</div>
+								<div className='text-2xl'>{employee?.name}</div>
+								<div className='text-gray-600'>{employee?.job_category}</div>
 							</div>
 						</div>
 						<div className='mt-2 flex flex-col'>
-							{employee.status === 'active' || employee.status === '1' ? (
+							{employee?.status === 'active' || employee?.status === '1' ? (
 								<div className='text-green-500 flex gap-1 items-center '>
 									<GoDotFill />
 									Available for hiring
@@ -44,19 +51,19 @@ const ViewStaffs = ({ employee }) => {
 						<div className='grid grid-cols-1 sm:grid-cols-2 gap-2 w-full pt-4 text-gray-600'>
 							<div className='flex gap-2 items-center'>
 								<MdMyLocation />
-								{employee.address}
+								{employee?.address}
 							</div>
 							<div className='flex gap-2 items-center'>
 								<IoLocation />
-								{employee.location_name}
+								{employee?.location_name}
 							</div>
 							<div className='flex gap-2 items-center'>
 								<MdOutlineWatchLater />
-								{employee.total_experience} years of experience
+								{employee?.total_experience} years of experience
 							</div>
 							<div className='flex gap-2 items-center'>
 								<MdSmartphone />
-								{employee.phone}
+								{employee?.phone}
 							</div>
 						</div>
 					</div>
@@ -67,7 +74,7 @@ const ViewStaffs = ({ employee }) => {
 					<FaGraduationCap />
 					Experience
 				</div>
-				<JobExperienceTimeline experiences={employee.restaurants} />
+				<JobExperienceTimeline experiences={employee?.restaurants} />
 			</div>
 		</div>
 	)
