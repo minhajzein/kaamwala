@@ -17,7 +17,7 @@ const Navbar = ({ scrollbtn }) => {
 						className='text-[.6rem] flex items-center gap-1 rounded-lg md:text-[.8rem] border border-primary-500 text-primary-500 p-2 cursor-pointer hover:scale-95 duration-200  font-semibold'
 					>
 						<RiPhoneFindLine />
-						Find a Job
+						Find a Kaamwala
 					</button>
 				</div>
 			</div>

@@ -21,21 +21,6 @@ const EmployeeCard = ({ employee }) => {
 								</div>
 							</div>
 						</div>
-						<div className='flex gap-2 p-2'>
-							<h1 className='text-sm pt-1'>Skills:</h1>
-							<div className='flex flex-wrap gap-2'>
-								{i.skills.map((skill, index) => (
-									<div className='pt-1'>
-										<div
-											key={index}
-											className='rounded-3xl bg-blue-50 border-2 border-blue-200 leading-none  text-[.7rem] p-1 text-center px-2 font-medium'
-										>
-											{skill}
-										</div>
-									</div>
-								))}
-							</div>
-						</div>
 					</div>
 				)
 			})}

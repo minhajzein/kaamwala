@@ -30,6 +30,8 @@ const AddEmployee = ({ handleClose }) => {
 
 	const handleSubmit = async values => {
 		const response = await addAnEmployee(values)
+		console.log(response)
+
 		if (response?.data?.success) {
 			toast.success(response.data.success)
 			handleClose()
@@ -37,7 +39,6 @@ const AddEmployee = ({ handleClose }) => {
 			toast.error('Employee already exists')
 		}
 	}
-	console.log()
 
 	return (
 		<div className='flex flex-col overflow-y-auto max-h-screen rounded-lg'>
@@ -72,7 +73,10 @@ const AddEmployee = ({ handleClose }) => {
 											maxCount={1}
 											listType='picture'
 											beforeUpload={() => false}
-											onChange={info => setFieldValue('photo', info.file)}
+											onChange={info => {
+												setFieldValue('photo', info.file)
+												console.log(info)
+											}}
 										>
 											<Button icon={<UploadOutlined />}>Upload</Button>
 										</Upload>

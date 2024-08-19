@@ -23,7 +23,6 @@ const Employee = () => {
 	}
 
 	const { data } = useGetAllEmployeesUnderAreaManagerQuery()
-	console.log(data)
 
 	const columns = StaffColumns(handleView, handleEdit)
 

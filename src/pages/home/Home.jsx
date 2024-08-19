@@ -13,7 +13,7 @@ const Home = () => {
 		<div className='flex flex-col py-5 gap-10 px-20'>
 			<Navbar scrollbtn={scrollToJobDetails} />
 			<Banner />
-			<div ref={jobDetailsRef} className=''>
+			<div ref={jobDetailsRef} className='h-dvh'>
 				<JobPortal />
 			</div>
 		</div>

@@ -4,11 +4,13 @@ import DataTable from '../../../components/table/DataTable'
 import { RestaurantColumns } from '../../../components/table/Columns/RestaurantColumn'
 import { useGetAllRestaurantsQuery } from '../../../redux/admin/api-slices/restaurantApiSlice'
 import Modal from '../../../components/Modal'
+import UpdateRestaurant from './UpdateRestaurant'
 
 //imports................................................................
 
 const Restaurant = () => {
 	const [showEditModal, setShowEditModal] = useState(false)
+	const [restaurant, setRestaurant] = useState(null)
 	const navigate = useNavigate()
 	const { data } = useGetAllRestaurantsQuery()
 
@@ -20,8 +22,8 @@ const Restaurant = () => {
 		//    dispatch(viewAdminMadrasa(id))
 		navigate('/areamanager/restaurant/profile')
 	}
-	const handleEdit = id => {
-		//    dispatch(editAdminMadrasa(id))
+	const handleEdit = data => {
+		setRestaurant(data)
 		setShowEditModal(true)
 	}
 
@@ -35,6 +37,7 @@ const Restaurant = () => {
 				filterColumn='district'
 				filterColumn2='location'
 				title={'Restaurant'}
+				type='modal'
 			/>
 			{showEditModal && (
 				<Modal

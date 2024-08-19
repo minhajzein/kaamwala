@@ -46,7 +46,7 @@ const employeeApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: { ...data.credentials }
             }),
-            invalidatesTags: ['Employees']
+            invalidatesTags: ['Employee']
         })
     })
 })
