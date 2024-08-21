@@ -1,25 +1,18 @@
-import DataTable from '../../../components/table/DataTable'
+import { useGetManagerDashboardDataQuery } from '../../../redux/area-manager/api-slices/dashboardApiSlice'
 import Cards from './Cards'
 
 //imports................................................................
 
 const Dashboard = () => {
-	const Madrasa = []
-	const columns = []
+	const { data } = useGetManagerDashboardDataQuery()
 
 	return (
-		<div>
-			<Cards />
-
-			<DataTable
-				data={Madrasa}
-				columns={columns}
-				filterColumn='id'
-				filterColumn2='name'
-				title={'madrasa'}
-				nopagination={true}
-			/>
-		</div>
+		<Cards
+			totalRestaurants={data?.totalRestaurents}
+			totalEmployees={data?.employees}
+			workingCount={data?.totalWorkingEmployee}
+			nonWorking={data?.totalNonWorkingEmployee}
+		/>
 	)
 }
 

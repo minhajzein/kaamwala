@@ -1,13 +1,10 @@
 import { Select, Input, Button } from 'antd'
-import { FiSearch } from 'react-icons/fi'
 import { CiSearch } from 'react-icons/ci'
 const { Option } = Select
 
 //imports................................................................................................................................
 
 const SearchFilter = ({
-	search,
-	setSearch,
 	jobFilter,
 	setJobFilter,
 	locationFilter,
@@ -17,13 +14,12 @@ const SearchFilter = ({
 	onSearch,
 }) => {
 	return (
-		<div className='px-10 py-3'>
-			<div className='w-full flex sticky  flex-col gap-2 bg-primary-50 border shadow p-4 rounded-lg'>
+		<div className='md:px-10  md:py-3'>
+			<div className='w-full flex flex-col gap-2 bg-primary-50 border shadow md:p-4 p-2 rounded-lg'>
 				<div className='flex md:gap-2 gap-1 border-gray-200 w-full rounded-lg'>
 					<Input
 						placeholder='Employee Code or Name'
-						value={search}
-						onChange={e => setSearch(e.target.value)}
+						onChange={e => onSearch(e.target.value)}
 						className='p-2 w-full border border-primary-400'
 					/>
 					<Button
@@ -32,10 +28,10 @@ const SearchFilter = ({
 						className='p-3  text-primary-900 border-primary-900 h-full flex gap-1 leading-none border text-center justify-center items-center rounded-lg cursor-pointer  font-medium bg-white hover:bg-gray-50'
 					>
 						<CiSearch />
-						Search
+						<span className='hidden md:block'>Search</span>
 					</Button>
 				</div>
-				<div className='grid md:grid-cols-4 md:gap-4'>
+				<div className='flex gap-2 md:gap-4'>
 					<Select
 						value={jobFilter}
 						onChange={value => setJobFilter(value)}

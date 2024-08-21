@@ -4,9 +4,9 @@ import apiSlice from "../../../api/apiSlice";
 
 const dashboardApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
-        getDashboardData: builder.query({
+        getManagerDashboardData: builder.query({
             query: () => ({
-                url: '/areamanager/dashboard',
+                url: '/manager-dashboard',
                 validateStatus: (response) => {
                     return response.status === 200
                 }
@@ -16,4 +16,4 @@ const dashboardApiSlice = apiSlice.injectEndpoints({
     })
 })
 
-export const { useGetDashboardDataQuery } = dashboardApiSlice
+export const { useGetManagerDashboardDataQuery } = dashboardApiSlice

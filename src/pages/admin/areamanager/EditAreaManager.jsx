@@ -1,12 +1,8 @@
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-import { useState } from 'react'
 import { Select } from 'antd'
 import { toast } from 'react-toastify'
-import {
-	useGetAllLocationsQuery,
-	useGetSingleLocationQuery,
-} from '../../../redux/admin/api-slices/locationApiSlice'
+import { useGetAllLocationsQuery } from '../../../redux/admin/api-slices/locationApiSlice'
 import { useEditAreaManagerMutation } from '../../../redux/admin/api-slices/managerApiSlice'
 
 //imports................................................................
@@ -15,13 +11,15 @@ const EditAreaManager = ({ handleClose, areaManager }) => {
 	const { data: locations } = useGetAllLocationsQuery()
 	const [updateAreaManager, { isLoading: updating }] =
 		useEditAreaManagerMutation()
-	const { data: singleLocation } = useGetSingleLocationQuery(
-		areaManager.location_id
-	)
 
 	const validationSchema = Yup.object({
 		name: Yup.string().required('Full name is required'),
-		phone: Yup.string().required('Contact number is required'),
+		phone: Yup.string()
+			.required('Contact number is required')
+			.matches(
+				/^(?:(?:\+|0{0,2})91(\s*|[\-])?|[0]?)?([6789]\d{2}([ -]?)\d{3}([ -]?)\d{4})$/,
+				'Invalid Phone Number'
+			),
 		email: Yup.string()
 			.email('Invalid email address')
 			.required('Email is required'),
@@ -44,8 +42,17 @@ const EditAreaManager = ({ handleClose, areaManager }) => {
 		enableReinitialize: true,
 		validationSchema,
 		onSubmit: async values => {
-			const response = await updateAreaManager(values)
-			console.log(response)
+			const response = await updateAreaManager({
+				id: areaManager.id,
+				credentials: values,
+			})
+
+			if (response?.data?.success) {
+				toast.success(response.data.success)
+				handleClose()
+			} else {
+				toast.error('Area Manager Creation Failed')
+			}
 		},
 	})
 
@@ -141,14 +148,14 @@ const EditAreaManager = ({ handleClose, areaManager }) => {
 									? 'border-red-500'
 									: ''
 							}`}
-							placeholder='Email Address'
+							placeholder='Enter Password'
 						/>
 						{formik.touched.password && formik.errors.password && (
 							<p className='text-red-500 text-xs italic'>
 								{formik.errors.password}
 							</p>
 						)}
-					</div>{' '}
+					</div>
 					<div className='mb-4'>
 						<label
 							htmlFor='address'
@@ -182,13 +189,9 @@ const EditAreaManager = ({ handleClose, areaManager }) => {
 						</label>
 						<Select
 							onChange={value => formik.setFieldValue('location_id', value)}
-							placeholder='Select Location'
-							labelInValue
+							placeholder={`${areaManager.location_name}`}
 							className='w-full'
-							defaultValue={{
-								value: singleLocation?.location.id,
-								label: singleLocation?.location?.location,
-							}}
+							id='location_name'
 						>
 							{locations?.locations.map(loc => (
 								<Option value={loc.id}>{loc.location}</Option>
@@ -209,9 +212,10 @@ const EditAreaManager = ({ handleClose, areaManager }) => {
 						</label>
 						<Select
 							onChange={value => formik.setFieldValue('status', value)}
-							placeholder='Select a status'
+							placeholder={`${
+								areaManager.status === '0' ? 'active' : 'Inactive'
+							}`}
 							className='w-full'
-							defaultActiveFirstOption={formik.values.status}
 						>
 							<Option value='0'>Active</Option>
 							<Option value='1'>Inactive</Option>

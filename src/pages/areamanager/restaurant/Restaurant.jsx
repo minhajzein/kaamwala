@@ -4,7 +4,7 @@ import DataTable from '../../../components/table/DataTable'
 import { RestaurantColumns } from '../../../components/table/Columns/RestaurantColumn'
 import { useGetAllRestaurantsQuery } from '../../../redux/admin/api-slices/restaurantApiSlice'
 import Modal from '../../../components/Modal'
-import UpdateRestaurant from './UpdateRestaurant'
+import UpdateRestaurant from '../../admin/restaurant/UpdateRestaurant'
 
 //imports................................................................
 
@@ -34,8 +34,7 @@ const Restaurant = () => {
 			<DataTable
 				data={data?.restaurents}
 				columns={columns}
-				filterColumn='district'
-				filterColumn2='location'
+				filterColumn='location_name'
 				title={'Restaurant'}
 				type='modal'
 			/>

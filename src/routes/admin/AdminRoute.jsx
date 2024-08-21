@@ -22,7 +22,10 @@ const AdminRoute = () => {
 						<Route path='/' element={<Dashboard />} />
 						<Route path='/datamanage' element={<DataManage />} />
 						<Route path='/areamanager' element={<AreaManager />} />
-						<Route path='/areamanager/profile' element={<ViewAreaManager />} />
+						<Route
+							path='/areamanager/profile/:id'
+							element={<ViewAreaManager />}
+						/>
 						<Route path='/restaurant' element={<Restaurant />} />
 						<Route
 							path='/restaurant/profile/:id'

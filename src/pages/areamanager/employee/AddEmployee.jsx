@@ -21,6 +21,12 @@ const validationSchema = Yup.object().shape({
 	address: Yup.string().required('Address is required'),
 	location_id: Yup.string().required('Location is required'),
 	phone: Yup.string().required('Phone is required'),
+	status: Yup.string().required(),
+	case_details: Yup.string().when('status', {
+		is: val => val === 3,
+		then: () => Yup.string().required(),
+		otherwise: () => Yup.string(),
+	}),
 })
 
 const AddEmployee = ({ handleClose }) => {
@@ -113,7 +119,6 @@ const AddEmployee = ({ handleClose }) => {
 									className='text-red-500 text-xs mt-1'
 								/>
 							</div>
-
 							<div>
 								<label className='block text-sm font-medium text-gray-700'>
 									Adhar Back
@@ -137,7 +142,6 @@ const AddEmployee = ({ handleClose }) => {
 									className='text-red-500 text-xs mt-1'
 								/>
 							</div>
-
 							<div>
 								<label className='block text-sm font-medium text-gray-700'>
 									Name
@@ -145,7 +149,7 @@ const AddEmployee = ({ handleClose }) => {
 								<Field
 									name='name'
 									as={Input}
-									className='mt-1 block w-full p-2 border rounded-md'
+									className='mt-1 block w-full p-1 border rounded-md'
 								/>
 								<ErrorMessage
 									name='name'
@@ -153,7 +157,6 @@ const AddEmployee = ({ handleClose }) => {
 									className='text-red-500 text-xs mt-1'
 								/>
 							</div>
-
 							<div>
 								<label className='block text-sm font-medium text-gray-700'>
 									Job
@@ -180,7 +183,6 @@ const AddEmployee = ({ handleClose }) => {
 									className='text-red-500 text-xs mt-1'
 								/>
 							</div>
-
 							<div>
 								<label className='block text-sm font-medium text-gray-700'>
 									Address
@@ -188,7 +190,7 @@ const AddEmployee = ({ handleClose }) => {
 								<Field
 									name='address'
 									as={TextArea}
-									className='mt-1 block w-full p-2 border rounded-md'
+									className='mt-1 block w-full p-1 border rounded-md'
 								/>
 								<ErrorMessage
 									name='address'
@@ -196,7 +198,6 @@ const AddEmployee = ({ handleClose }) => {
 									className='text-red-500 text-xs mt-1'
 								/>
 							</div>
-
 							<div>
 								<label className='block text-sm font-medium text-gray-700'>
 									Location
@@ -229,10 +230,41 @@ const AddEmployee = ({ handleClose }) => {
 								<Field
 									name='phone'
 									as={Input}
-									className='mt-1 block w-full p-2 border rounded-md'
+									className='mt-1 block w-full p-1 border rounded-md'
 								/>
 								<ErrorMessage
 									name='phone'
+									component='div'
+									className='text-red-500 text-xs mt-1'
+								/>
+							</div>
+							<div className='flex flex-col gap-1 '>
+								<h1>Employee Status</h1>
+								<Radio.Group
+									className='p-3 rounded-md bg-white border'
+									onChange={e => setFieldValue('status', e.target.value)}
+								>
+									<Radio value={1}>Working</Radio>
+									<Radio value={2}>Not Working</Radio>
+									<Radio value={3}>Blacklisted</Radio>
+								</Radio.Group>
+								<ErrorMessage
+									name='status'
+									component='div'
+									className='text-red-500 text-xs mt-1'
+								/>
+							</div>
+							<div>
+								<label className='block text-sm font-medium text-gray-700'>
+									Case Details
+								</label>
+								<Field
+									name='case_details'
+									as={TextArea}
+									className='mt-1 block w-full p-1 border rounded-md'
+								/>
+								<ErrorMessage
+									name='case_details'
 									component='div'
 									className='text-red-500 text-xs mt-1'
 								/>

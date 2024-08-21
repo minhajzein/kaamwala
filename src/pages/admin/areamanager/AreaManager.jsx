@@ -13,13 +13,14 @@ const AreaManager = () => {
 	const [currentAreaManager, setCurrentAreaManager] = useState(null)
 	const navigate = useNavigate()
 	const { data } = useGetAllAreaManagersQuery()
+	console.log(data)
 
 	const handleCloseEditModal = () => {
 		setShowEditModal(false)
 	}
 
-	const handleView = id => {
-		navigate('/admin/areamanager/profile')
+	const handleView = data => {
+		navigate(`/admin/areamanager/profile/${data.id}`)
 	}
 
 	const handleEdit = data => {
@@ -34,7 +35,7 @@ const AreaManager = () => {
 			<DataTable
 				data={data?.areaMangers}
 				columns={columns}
-				filterColumn='location'
+				filterColumn='location_name'
 				title='Area_Manager'
 				type='modal'
 			/>

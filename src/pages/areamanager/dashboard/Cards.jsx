@@ -1,7 +1,42 @@
-import { FaUsers, FaUserTie, FaUserCheck, FaUserTimes } from 'react-icons/fa'
+import { FaUserTie, FaUserCheck, FaUserTimes } from 'react-icons/fa'
 import { IoRestaurant } from 'react-icons/io5'
 
-const Cards = () => {
+const Cards = ({
+	totalRestaurants,
+	totalEmployees,
+	workingCount,
+	nonWorking,
+}) => {
+	const cardData = [
+		{
+			id: 1,
+			title: 'Total Restaurents',
+			count: totalRestaurants,
+			icon: IoRestaurant,
+			color: 'blue',
+		},
+		{
+			id: 2,
+			title: 'Total Employees',
+			count: totalEmployees,
+			icon: FaUserTie,
+			color: 'blue',
+		},
+		{
+			id: 3,
+			title: 'Working Count',
+			count: workingCount,
+			icon: FaUserCheck,
+			color: 'gray',
+		},
+		{
+			id: 4,
+			title: 'Non-Working Count',
+			count: nonWorking,
+			icon: FaUserTimes,
+			color: 'red',
+		},
+	]
 	return (
 		<div>
 			<section className='text-gray-700 body-font bg-gray-100'>
@@ -34,36 +69,5 @@ const Cards = () => {
 		</div>
 	)
 }
-
-const cardData = [
-	{
-		id: 1,
-		title: 'Total Restaurents',
-		count: 23,
-		icon: IoRestaurant,
-		color: 'blue',
-	},
-	{
-		id: 2,
-		title: 'Total Employees',
-		count: 128,
-		icon: FaUserTie,
-		color: 'blue',
-	},
-	{
-		id: 3,
-		title: 'Working Count',
-		count: 111,
-		icon: FaUserCheck,
-		color: 'gray',
-	},
-	{
-		id: 4,
-		title: 'Non-Working Count',
-		count: 17,
-		icon: FaUserTimes,
-		color: 'red',
-	},
-]
 
 export default Cards

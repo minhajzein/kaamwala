@@ -35,11 +35,11 @@ const Navbar = ({ type }) => {
 	}, [])
 
 	return (
-		<nav className='sticky bg-white top-0 z-10 bg-opacity-30 backdrop-blur-md backdrop-filter'>
+		<nav className='sticky bg-white top-0 z-10 '>
 			<div className='max-w-7xl mx-auto px-4 sm:px-2 '>
 				<div className='flex justify-between  items-center'>
 					<div className='flex items-center space-x-4'>
-						<h1 className='text-md font-medium text-gray-600 capitalize'>
+						<h1 className='md:text-md text-[14px] truncate font-medium text-gray-600 capitalize'>
 							{convertedPath}
 						</h1>
 						<h1 className='text-xl font-medium text-gray-800'>{''}</h1>

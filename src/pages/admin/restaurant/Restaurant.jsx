@@ -42,8 +42,8 @@ const Restaurant = () => {
 				<Modal
 					visibles={showEditModal}
 					onClose={handleCloseEditModal}
-					id='edit-Madrasa-admin'
-					title='Edit Madrasa'
+					id='edit-restaurant-admin'
+					title='Edit Restaurant'
 					content={
 						<UpdateRestaurant
 							handleClose={handleCloseEditModal}

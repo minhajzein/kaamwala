@@ -33,10 +33,10 @@ const managerApiSlice = apiSlice.injectEndpoints({
             invalidatesTags: ['Area-Managers']
         }),
         editAreaManager: builder.mutation({
-            query: (id, credentials) => ({
-                url: `/area-manager/${id}`,
-                method: 'POST',
-                body: { ...credentials }
+            query: (data) => ({
+                url: `/area-manager/${data.id}`,
+                method: 'PUT',
+                body: { ...data.credentials }
             }),
             invalidatesTags: ['Area-Managers']
         })

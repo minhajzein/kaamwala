@@ -335,9 +335,9 @@ const DataTable = ({
 	}
 
 	return (
-		<div className='container bg-white  border rounded-xl border-dotted no-scrollbar  p-2 md:pt-4 md:px-4 md:pb-2 min-w-full bg-beige-50'>
+		<div className='container bg-white  md:border md:rounded-xl border-dotted no-scrollbar  p-2 md:pt-4 md:px-4 md:pb-2 min-w-full bg-beige-50'>
 			<div className='flex justify-between items-center md:mb-4 mb-2'>
-				<div className='flex md:gap-3 gap-1'>
+				<div className='flex flex-col md:flex-row md:gap-3 gap-1'>
 					<div className='md:mr-2 mr-1'>
 						<input
 							type='text'
@@ -377,7 +377,7 @@ const DataTable = ({
 					>
 						<select
 							value={filterColumn2}
-							onChange={e => setFilterValue(e.target.value)}
+							onChange={e => setFilterValue2(e.target.value)}
 							className='bg-beige-200 appearance-none md:px-3 w-full px-1  py-1 md:pr-8 border text-gray-800 border-gray-500 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-xs md:text-sm'
 						>
 							<option value=''>Filter {formatText(filterColumn2)}</option>
@@ -394,7 +394,7 @@ const DataTable = ({
 						</div>
 					</div>
 				</div>
-				<div className='flex items-center md:gap-3 gap-1'>
+				<div className='flex flex-col md:flex-row items-center md:gap-3 gap-1'>
 					{showPrint && (
 						<div className='relative flex items-center' ref={dropdownRef}>
 							<button

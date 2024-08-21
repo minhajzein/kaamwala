@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import JobCard from './JobCard'
 import SearchFilter from './SearchFilter'
 import { Button } from 'antd'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import './JobPortal.css'
 import ViewStaffs from '../admin/staffs/ViewStaffs'
-import { useGetAllEmployeesQuery } from '../../redux/api-slices/kaamwalaApiSlice'
+import { useGetAllEmployeesInWebQuery } from '../../redux/api-slices/kaamwalaApiSlice'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 const JobPortal = () => {
 	const [search, setSearch] = useState('')
@@ -15,10 +17,11 @@ const JobPortal = () => {
 	const [shownJobs, setShownJobs] = useState([])
 	const [visibleCount, setVisibleCount] = useState(10)
 	const [searched, setSearched] = useState(false)
-	const { data, isSuccess } = useGetAllEmployeesQuery()
+	const { data, isSuccess } = useGetAllEmployeesInWebQuery()
 	const [selectedJobId, setSelectedJobId] = useState(
 		isSuccess && data?.employees[0]?.id
 	)
+	const navigate = useNavigate()
 
 	useEffect(() => {
 		const jobs = data?.employees.filter(
@@ -36,15 +39,14 @@ const JobPortal = () => {
 		...new Set(data?.employees.map(job => job.location_name)),
 	]
 
-	const handleSearch = () => {
+	const handleSearch = search => {
 		setSearched(true)
 		setVisibleCount(10) // Reset visible count on new search
-		const jobs = data?.employees.filter(
-			job =>
-				job.name.toLowerCase().includes(search.toLowerCase()) &&
-				(jobFilter ? job.name === jobFilter : true) &&
-				(locationFilter ? job.employee_code === locationFilter : true)
+		const jobs = data?.employees.filter(job =>
+			job.employee_code.toLowerCase().includes(search.toLowerCase())
 		)
+		console.log(jobs)
+
 		setFilteredJobs(jobs)
 		setShownJobs(jobs?.slice(0, 10))
 	}
@@ -55,7 +57,14 @@ const JobPortal = () => {
 	}
 
 	const selectedJob = filteredJobs?.find(job => job.id === selectedJobId)
-	console.log(filteredJobs)
+
+	const showSingle = employee => {
+		if (employee.status === '1') {
+			toast.error('Employee is already working')
+		} else {
+			navigate(`/employee/${job.id}`)
+		}
+	}
 
 	return (
 		<div className='border bg-[url("/Images/hero-background.jpg")]   bg-cover overflow-hidden w-full flex flex-col gap-2 rounded-xl'>
@@ -71,14 +80,31 @@ const JobPortal = () => {
 				onSearch={handleSearch}
 			/>
 			{searched && (
-				<div className='bg-primary-50 overflow-auto'>
+				<div className='bg-primary-50'>
 					{filteredJobs?.length > 0 ? (
 						<div className='w-full flex'>
-							<div className='w-1/3   max-h-dvh overflow-y-auto'>
+							<div className='md:w-1/3 w-full md:max-h-dvh md:overflow-y-auto'>
 								<h1 className='text-center p-2 italic'>
 									Showing {shownJobs.length} of {filteredJobs.length} employees
 								</h1>
-								<div className='space-y-4 px-2 overflow-y-auto'>
+								<div className='md:hidden '>
+									<TransitionGroup>
+										{shownJobs.map(job => (
+											<CSSTransition
+												key={job.id}
+												timeout={300}
+												classNames='fade'
+											>
+												<JobCard
+													job={job}
+													isFocused={job.id === selectedJobId}
+													onClick={showSingle}
+												/>
+											</CSSTransition>
+										))}
+									</TransitionGroup>
+								</div>
+								<div className='space-y-4 px-2 overflow-y-auto hidden md:block'>
 									<TransitionGroup>
 										{shownJobs.map(job => (
 											<CSSTransition
@@ -104,7 +130,7 @@ const JobPortal = () => {
 									)}
 								</div>
 							</div>
-							<div className='w-2/3 h-full max-h-dvh overflow-y-auto'>
+							<div className='w-2/3 h-full hidden md:block max-h-dvh overflow-y-auto'>
 								{isSuccess && selectedJob && (
 									<ViewStaffs employee={selectedJob} />
 								)}

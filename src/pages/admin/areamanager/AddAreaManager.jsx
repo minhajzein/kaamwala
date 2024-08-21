@@ -13,7 +13,12 @@ const AddAreaManager = ({ handleClose }) => {
 
 	const validationSchema = Yup.object({
 		name: Yup.string().required('Full name is required'),
-		phone: Yup.string().required('Contact number is required'),
+		phone: Yup.string()
+			.required('Contact number is required')
+			.matches(
+				/^(?:(?:\+|0{0,2})91(\s*|[\-])?|[0]?)?([6789]\d{2}([ -]?)\d{3}([ -]?)\d{4})$/,
+				'Invalid Phone Number'
+			),
 		email: Yup.string()
 			.email('Invalid email address')
 			.required('Email is required'),

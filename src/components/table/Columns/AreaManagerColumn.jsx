@@ -1,18 +1,19 @@
-import React from 'react'
 import { FaRegEye } from 'react-icons/fa'
 import { RiEditLine } from 'react-icons/ri'
 import { Tooltip } from 'antd'
 
+//imports................................................................
+
 export const StatusBadge = ({ status }) => {
 	const statusClass =
-		status == '0'
+		status !== '1'
 			? 'bg-green-50 border-green-400 border text-green-700'
 			: 'bg-red-50 border border-red-400 text-red-700'
 	return (
 		<span
 			className={`px-2 py-[2px] flex items-center justify-center rounded-full capitalize ${statusClass}`}
 		>
-			{status === '0' ? 'Active' : 'Inactive'}
+			{status !== '1' ? 'Active' : 'Inactive'}
 		</span>
 	)
 }

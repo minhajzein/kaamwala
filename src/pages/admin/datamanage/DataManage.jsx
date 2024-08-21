@@ -27,32 +27,34 @@ const DataManage = () => {
 	}
 
 	return (
-		<div className='container mx-auto p-8'>
-			<div className='flex  gap-8 mb-8'>
+		<div className='container bg-white md:bg-none p-1 w-full flex flex-col gap-1 md:p-8'>
+			<div className='flex md:gap-8 gap-2'>
 				<button
 					onClick={() => setCurrentSection('Location')}
-					className={`flex items-center gap-2 px-5 py-3 rounded-full shadow-lg transition-all duration-300 focus:outline-none ${
+					className={`flex items-center gap-2 md:p-3 p-2 rounded shadow-lg transition-all duration-300 focus:outline-none ${
 						currentSection === 'Location'
 							? 'bg-blue-500 text-white'
 							: 'bg-gray-200 text-gray-800 hover:bg-gray-300'
 					}`}
 				>
-					<FaMapMarkedAlt className='w-6 h-6' />
-					<span className='font-semibold'>Location</span>
+					<FaMapMarkedAlt className='md:size-6 size-3' />
+					<span className='font-semibold text-sm md:text-xl'>Location</span>
 				</button>
 				<button
 					onClick={() => setCurrentSection('JobCategory')}
-					className={`flex items-center gap-2 px-5 py-3 rounded-full shadow-lg transition-all duration-300 focus:outline-none ${
+					className={`flex items-center gap-2 px-5 py-3 rounded shadow-lg transition-all duration-300 focus:outline-none ${
 						currentSection === 'JobCategory'
 							? 'bg-blue-500 text-white'
 							: 'bg-gray-200 text-gray-800 hover:bg-gray-300'
 					}`}
 				>
-					<FaBriefcase className='w-6 h-6' />
-					<span className='font-semibold'>Job Category</span>
+					<FaBriefcase className='md:size-6 size-3' />
+					<span className='font-semibold text-sm md:text-xl'>Job Category</span>
 				</button>
 			</div>
-			<div className='p-6 bg-white rounded-xl shadow-lg'>{renderSection()}</div>
+			<div className='md:p-6 py-1 md:bg-white rounded-xl md:shadow-lg'>
+				{renderSection()}
+			</div>
 
 			{modalVisible && (
 				<Modal

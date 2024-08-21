@@ -27,12 +27,12 @@ const Employee = () => {
 	const columns = StaffColumns(handleView, handleEdit)
 
 	return (
-		<div>
+		<>
 			<DataTable
 				data={data?.employees}
 				columns={columns}
-				filterColumn='district'
-				filterColumn2='location'
+				filterColumn='job_category'
+				filterColumn2='location_name'
 				title={'Employee'}
 				type={'modal'}
 			/>
@@ -46,7 +46,7 @@ const Employee = () => {
 					size='big'
 				/>
 			)}
-		</div>
+		</>
 	)
 }
 

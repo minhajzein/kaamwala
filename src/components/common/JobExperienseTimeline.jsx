@@ -20,7 +20,7 @@ const JobExperienceTimeline = ({ experiences }) => {
 			{experiences?.map((job, index) => (
 				<Timeline.Item key={job.id} className='fade-in-up'>
 					<div className='flex justify-center mb-5'>
-						<Card className='w-full p-4 border border-gray-200 rounded-lg shadow-md bg-white'>
+						<Card className='w-full md:p-4 border border-gray-200 rounded-lg shadow-md bg-white'>
 							<div>
 								<div className='text-lg font-bold mb-2'>{job.name}</div>
 								<div className='mb-2 text-sm md:text-base'>
@@ -33,12 +33,12 @@ const JobExperienceTimeline = ({ experiences }) => {
 									<div className='grid grid-cols-1 md:grid-cols-2 gap-4 mt-2'>
 										<div>
 											{job.case === '1' && (
-												<div className='mb-2 text-sm md:text-base'>
+												<div className='mb-2 text-xs  md:text-base'>
 													<strong>Case:</strong> {job.case}
 												</div>
 											)}
 										</div>
-										<div className='space-y-1 text-xs md:text-sm'>
+										<div className='space-y-2 text-xs md:text-sm'>
 											<div className='flex items-center'>
 												<strong className='w-1/2'>Hygiene:</strong>
 												<Rate

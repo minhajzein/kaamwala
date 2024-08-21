@@ -1,13 +1,13 @@
-import { Table } from 'antd'
 import { useGetDashboardDataQuery } from '../../../redux/admin/api-slices/dashbordApiSlice'
 import Cards from './Cards'
-import recentEmployeesColumns from '../../../components/table/Columns/RecentEmployeesColumn'
+import DataTable from '../../../components/table/DataTable'
+import { StaffColumns } from '../../../components/table/Columns/StaffColumns'
 
 //imports................................................................................................
 
 const Dashboard = () => {
-	const { data, error } = useGetDashboardDataQuery()
-
+	const { data } = useGetDashboardDataQuery()
+	const columns = StaffColumns()
 	return (
 		<div>
 			<Cards
@@ -16,11 +16,13 @@ const Dashboard = () => {
 				workingCount={data?.workingEmployees}
 				nonWorking={data?.inactiveEmployees}
 			/>
-			<Table
-				dataSource={data?.recentEmployees}
-				columns={recentEmployeesColumns}
-				pagination={{ position: ['bottomCenter'] }}
-				rowKey={record => record.id}
+			<DataTable
+				data={data?.recentEmployees}
+				columns={columns}
+				filterColumn='id'
+				filterColumn2='name'
+				title={'recent employees'}
+				nopagination={true}
 			/>
 		</div>
 	)

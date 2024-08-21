@@ -4,7 +4,7 @@ import apiSlice from '../../api/apiSlice'
 
 const kaamwalaApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
-        getAllEmployees: builder.query({
+        getAllEmployeesInWeb: builder.query({
             query: () => ({
                 url: '/web-employees',
                 validateStatus: (response) => {
@@ -17,4 +17,4 @@ const kaamwalaApiSlice = apiSlice.injectEndpoints({
 })
 
 
-export const { useGetAllEmployeesQuery } = kaamwalaApiSlice
+export const { useGetAllEmployeesInWebQuery } = kaamwalaApiSlice

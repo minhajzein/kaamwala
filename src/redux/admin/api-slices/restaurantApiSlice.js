@@ -32,10 +32,10 @@ const restaurantApiSlice = apiSlice.injectEndpoints({
             keepUnusedDataFor: 5
         }),
         editRestaurant: builder.mutation({
-            query: (id, credentials) => ({
-                url: `/restaurants/${id}`,
+            query: (data) => ({
+                url: `/restaurants/${data.id}`,
                 method: 'PUT',
-                body: { ...credentials }
+                body: { ...data.credentials }
             }),
             invalidatesTags: ['Restaurants']
         })

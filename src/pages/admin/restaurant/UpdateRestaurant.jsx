@@ -37,8 +37,10 @@ const UpdateRestaurant = ({ handleClose, restaurant }) => {
 		validationSchema,
 		onSubmit: async values => {
 			try {
-				const response = await updateRestaurant(restaurant.id, values)
-				console.log(restaurant)
+				const response = await updateRestaurant({
+					id: restaurant.id,
+					credentials: values,
+				})
 				if (response?.data?.success) {
 					toast.success(response.data.success)
 					handleClose()
@@ -185,8 +187,8 @@ const UpdateRestaurant = ({ handleClose, restaurant }) => {
 						</label>
 						<Select
 							onChange={value => formik.setFieldValue('location_id', value)}
-							placeholder='Select Location'
-							className='w-full'
+							placeholder={restaurant.location_name}
+							className='w-full text-xl'
 						>
 							{locations?.locations.map(loc => (
 								<Option value={loc.id}>{loc.location}</Option>

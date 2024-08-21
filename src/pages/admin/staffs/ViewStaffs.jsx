@@ -19,7 +19,7 @@ const ViewStaffs = ({ employee }) => {
 
 	return (
 		<div className='p-4'>
-			<div className='bg-white p-5 rounded-md border'>
+			<div className='bg-white md:p-5 rounded-md border'>
 				<div className=' gap-4'>
 					<div className='rounded-md'>
 						<img
@@ -36,46 +36,55 @@ const ViewStaffs = ({ employee }) => {
 							</div>
 						</div>
 						<div className='mt-2 flex flex-col'>
-							{employee?.status === 'active' || employee?.status === '1' ? (
+							{employee?.status === '1' ? (
+								<div className='text-orange-400 flex gap-1 items-center '>
+									<GoDotFill />
+									Working
+								</div>
+							) : employee?.status === '2' ? (
 								<div className='text-green-500 flex gap-1 items-center '>
 									<GoDotFill />
 									Available for hiring
 								</div>
 							) : (
-								<div className='text-red-500 flex gap-1 items-center justify-end'>
+								<div className='text-red-500 flex gap-1 items-center'>
 									<GoDotFill />
-									Not Available
+									Blacklisted
 								</div>
 							)}
 						</div>
-						<div className='grid grid-cols-1 sm:grid-cols-2 gap-2 w-full pt-4 text-gray-600'>
-							<div className='flex gap-2 items-center'>
-								<MdMyLocation />
-								{employee?.address}
+						{employee.status !== '1' && (
+							<div className='grid grid-cols-1 sm:grid-cols-2 gap-2 w-full pt-4 text-gray-600'>
+								<div className='flex gap-2 items-center'>
+									<MdMyLocation />
+									{employee?.address}
+								</div>
+								<div className='flex gap-2 items-center'>
+									<IoLocation />
+									{employee?.location_name}
+								</div>
+								<div className='flex gap-2 items-center'>
+									<MdOutlineWatchLater />
+									{employee?.total_experience} years of experience
+								</div>
+								<div className='flex gap-2 items-center'>
+									<MdSmartphone />
+									{employee?.phone}
+								</div>
 							</div>
-							<div className='flex gap-2 items-center'>
-								<IoLocation />
-								{employee?.location_name}
-							</div>
-							<div className='flex gap-2 items-center'>
-								<MdOutlineWatchLater />
-								{employee?.total_experience} years of experience
-							</div>
-							<div className='flex gap-2 items-center'>
-								<MdSmartphone />
-								{employee?.phone}
-							</div>
-						</div>
+						)}
 					</div>
 				</div>
 			</div>
-			<div className='bg-white border rounded-sm p-4 mt-4'>
-				<div className='flex gap-2 items-center mb-5'>
-					<FaGraduationCap />
-					Experience
+			{employee.status !== '1' && (
+				<div className='bg-white border rounded-sm md:p-4 p-2 mt-4'>
+					<div className='flex gap-2 items-center mb-5'>
+						<FaGraduationCap />
+						Experience
+					</div>
+					<JobExperienceTimeline experiences={employee?.restaurants} />
 				</div>
-				<JobExperienceTimeline experiences={employee?.restaurants} />
-			</div>
+			)}
 		</div>
 	)
 }

@@ -34,7 +34,13 @@ const recentEmployeesColumns = [
 		key: 'status',
 		dataIndex: 'status',
 		render: status => (
-			<Tag color={status === 'active' ? 'green' : 'red'}>{status}</Tag>
+			<Tag color={status === '1' ? 'orange' : status === '2' ? 'green' : 'red'}>
+				{status === '1'
+					? 'Woriking'
+					: status === '2'
+					? 'Available to Hire'
+					: 'Blacklisted'}
+			</Tag>
 		),
 	},
 ]
