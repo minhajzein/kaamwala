@@ -1,4 +1,3 @@
-import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import AdminLayout from '../../layouts/AdminLayout'
 import Dashboard from '../../pages/admin/dashboard/Dashboard'
@@ -6,7 +5,7 @@ import DataManage from '../../pages/admin/datamanage/DataManage'
 import AreaManager from '../../pages/admin/areamanager/AreaManager'
 import ViewAreaManager from '../../pages/admin/areamanager/ViewAreaManager'
 import Staffs from '../../pages/admin/staffs/Staffs'
-import ViewStaffs from '../../pages/admin/staffs/ViewStaffs'
+import ViewEmployee from '../../pages/areamanager/employee/ViewEmployee'
 import RestaurantProfile from '../../pages/admin/restaurant/RestaurantProfile'
 import Restaurant from '../../pages/admin/restaurant/Restaurant'
 import AddStaffs from '../../pages/admin/staffs/AddStaffs'
@@ -33,7 +32,7 @@ const AdminRoute = () => {
 						/>
 						<Route path='/staffs' element={<Staffs />} />
 						<Route path='/staff/add' element={<AddStaffs />} />
-						<Route path='/staff/profile/:id' element={<ViewStaffs />} />
+						<Route path='/staff/profile/:id' element={<ViewEmployee />} />
 						<Route path='/settings' element={<Settings />} />
 					</Route>
 				</Route>

@@ -19,8 +19,8 @@ const Dashboard = () => {
 			<DataTable
 				data={data?.recentEmployees}
 				columns={columns}
-				filterColumn='id'
-				filterColumn2='name'
+				filterColumn='job_category'
+				filterColumn2='location_name'
 				title={'recent employees'}
 				nopagination={true}
 			/>

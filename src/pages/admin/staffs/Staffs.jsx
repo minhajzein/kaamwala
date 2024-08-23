@@ -10,19 +10,22 @@ import EditEmployee from '../../areamanager/employee/EditEmployee'
 
 const Staffs = () => {
 	const [showEditModal, setShowEditModal] = useState(false)
-	const [currentEmployee, setCurrentEmployee] = useState()
+	const [currentEmployee, setCurrentEmployee] = useState(null)
 	const navigate = useNavigate()
 
 	const handleView = data => {
 		navigate(`/admin/staff/profile/${data.id}`)
 	}
+
 	const handleCloseEditModal = () => {
 		setShowEditModal(false)
 	}
+
 	const handleEdit = data => {
 		setCurrentEmployee(data)
 		setShowEditModal(true)
 	}
+
 	const columns = StaffColumns(handleView, handleEdit)
 	const { data } = useGetAllEmployeesQuery()
 

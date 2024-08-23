@@ -16,29 +16,31 @@ const SidebarData = [
 		path: '/admin/',
 		color: 'bg-gray-500',
 	},
+
 	{
-		name: 'DataManage',
-		icon: FaDatabase,
-		path: '/admin/datamanage',
-		color: 'bg-red-500',
-	},
-	{
-		name: 'Area Manager',
+		name: 'Area Managers',
 		icon: FaUserTie,
 		path: '/admin/areamanager',
 		color: 'bg-green-500',
 	},
+
 	{
-		name: 'Restraurant',
+		name: 'Employees',
+		icon: IoIosMan,
+		path: '/admin/staffs',
+		color: 'bg-yellow-500',
+	},
+	{
+		name: 'Restraurants',
 		icon: IoRestaurant,
 		path: '/admin/restaurant',
 		color: 'bg-violet-500',
 	},
 	{
-		name: 'Employee',
-		icon: IoIosMan,
-		path: '/admin/staffs',
-		color: 'bg-yellow-500',
+		name: 'Data Manage',
+		icon: FaDatabase,
+		path: '/admin/datamanage',
+		color: 'bg-red-500',
 	},
 	{
 		name: 'Settings',

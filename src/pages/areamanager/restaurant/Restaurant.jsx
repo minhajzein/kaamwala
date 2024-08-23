@@ -18,9 +18,8 @@ const Restaurant = () => {
 		setShowEditModal(false)
 	}
 
-	const handleView = id => {
-		//    dispatch(viewAdminMadrasa(id))
-		navigate('/areamanager/restaurant/profile')
+	const handleView = data => {
+		navigate(`/area-manager/restaurant/profile/${data.id}`)
 	}
 	const handleEdit = data => {
 		setRestaurant(data)

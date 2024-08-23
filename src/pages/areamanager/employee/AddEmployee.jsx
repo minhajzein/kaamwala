@@ -7,15 +7,15 @@ import { useGetAllCategoriesQuery } from '../../../redux/admin/api-slices/catego
 import { useGetAllLocationsQuery } from '../../../redux/admin/api-slices/locationApiSlice'
 import { CgSpinner } from 'react-icons/cg'
 import { toast } from 'react-toastify'
-
+import getBase64 from '../../../utils/convertToBase64'
 const { TextArea } = Input
 
 //imports................................................................
 
 const validationSchema = Yup.object().shape({
-	photo: Yup.mixed().required('Photo is required'),
-	aadhar_front: Yup.mixed().required('Adhar front is required'),
-	aadhar_back: Yup.mixed().required('Adhar back is required'),
+	photo: Yup.string().required('Photo is required'),
+	aadhar_front: Yup.string().required('Adhar front is required'),
+	aadhar_back: Yup.string().required('Adhar back is required'),
 	name: Yup.string().required('Name is required'),
 	job_category_id: Yup.string().required('Job is required'),
 	address: Yup.string().required('Address is required'),
@@ -43,6 +43,15 @@ const AddEmployee = ({ handleClose }) => {
 			handleClose()
 		} else {
 			toast.error('Employee already exists')
+		}
+	}
+
+	const toBase64 = async file => {
+		try {
+			const base64 = await getBase64(file)
+			return base64
+		} catch (error) {
+			console.error(error)
 		}
 	}
 
@@ -79,9 +88,8 @@ const AddEmployee = ({ handleClose }) => {
 											maxCount={1}
 											listType='picture'
 											beforeUpload={() => false}
-											onChange={info => {
-												setFieldValue('photo', info.file)
-												console.log(info)
+											onChange={async info => {
+												setFieldValue('photo', await toBase64(info.file))
 											}}
 										>
 											<Button icon={<UploadOutlined />}>Upload</Button>
@@ -105,8 +113,11 @@ const AddEmployee = ({ handleClose }) => {
 											maxCount={1}
 											listType='picture'
 											beforeUpload={() => false}
-											onChange={info =>
-												setFieldValue('aadhar_front', info.file)
+											onChange={async info =>
+												setFieldValue(
+													'aadhar_front',
+													await getBase64(info.file)
+												)
 											}
 										>
 											<Button icon={<UploadOutlined />}>Upload</Button>
@@ -130,7 +141,9 @@ const AddEmployee = ({ handleClose }) => {
 											maxCount={1}
 											listType='picture'
 											beforeUpload={() => false}
-											onChange={info => setFieldValue('aadhar_back', info.file)}
+											onChange={async info =>
+												setFieldValue('aadhar_back', await getBase64(info.file))
+											}
 										>
 											<Button icon={<UploadOutlined />}>Upload</Button>
 										</Upload>
@@ -166,7 +179,7 @@ const AddEmployee = ({ handleClose }) => {
 										<Select
 											name='job_category_id'
 											className='w-full'
-											placeholder='Select a Location'
+											placeholder='Select a Role'
 											onChange={value =>
 												setFieldValue('job_category_id', value)
 											}

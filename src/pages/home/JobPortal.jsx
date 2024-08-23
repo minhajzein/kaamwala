@@ -18,9 +18,7 @@ const JobPortal = () => {
 	const [visibleCount, setVisibleCount] = useState(10)
 	const [searched, setSearched] = useState(false)
 	const { data, isSuccess } = useGetAllEmployeesInWebQuery()
-	const [selectedJobId, setSelectedJobId] = useState(
-		isSuccess && data?.employees[0]?.id
-	)
+	const [selectedJobId, setSelectedJobId] = useState(null)
 	const navigate = useNavigate()
 
 	useEffect(() => {
@@ -103,6 +101,14 @@ const JobPortal = () => {
 											</CSSTransition>
 										))}
 									</TransitionGroup>
+									{shownJobs.length < filteredJobs.length && (
+										<Button
+											onClick={loadMore}
+											className='mt-4 w-full bg-blue-600 text-white hover:bg-blue-700'
+										>
+											Show More
+										</Button>
+									)}
 								</div>
 								<div className='space-y-4 px-2 overflow-y-auto hidden md:block'>
 									<TransitionGroup>
@@ -132,7 +138,9 @@ const JobPortal = () => {
 							</div>
 							<div className='w-2/3 h-full hidden md:block max-h-dvh overflow-y-auto'>
 								{isSuccess && selectedJob && (
-									<ViewStaffs employee={selectedJob} />
+									<ViewStaffs
+										employee={selectedJob ? selectedJob : data?.employees[0]}
+									/>
 								)}
 							</div>
 						</div>

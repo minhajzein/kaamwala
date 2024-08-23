@@ -11,8 +11,6 @@ const Home = () => {
 
 	return (
 		<div className='flex flex-col py-5 gap-5 md:gap-10 p-4 md:px-20'>
-			<Navbar scrollbtn={scrollToJobDetails} />
-			<Banner />
 			<div ref={jobDetailsRef} className='h-dvh'>
 				<JobPortal />
 			</div>

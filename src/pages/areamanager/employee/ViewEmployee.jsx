@@ -1,4 +1,3 @@
-import avatar from '/Images/avatar.jpg'
 import { GoDotFill } from 'react-icons/go'
 import { MdMyLocation, MdOutlineWatchLater, MdSmartphone } from 'react-icons/md'
 import { IoLocation } from 'react-icons/io5'
@@ -10,6 +9,7 @@ import AddExperience from './AddExperience'
 import { useParams } from 'react-router-dom'
 import { useGetSingleEmployeeUnderAreaManagerQuery } from '../../../redux/area-manager/api-slices/employeeApiSlice'
 import { CgSpinner } from 'react-icons/cg'
+import AverageRating from './AverageRating'
 
 //imports.................................................................................................
 
@@ -24,23 +24,41 @@ const ViewEmployee = () => {
 			<CgSpinner className='m-auto animate-spin' />
 		</div>
 	) : (
-		<div className='p-5'>
+		<div className='md:p-5'>
 			<div className='bg-white p-5 rounded-md border'>
 				<div className='grid grid-cols-1 lg:grid-cols-[1fr,3fr,2fr] gap-4'>
 					<div className='rounded-md'>
 						<img
-							src={`https://kaam-wala.grohance.com/api/${data.employees?.photo}`}
+							src={data?.employees?.photo}
 							className='rounded-md w-48 p-2 border-2'
 							alt=''
 						/>
 					</div>
 					<div className='p-2'>
 						<div className='flex flex-col lg:flex-row justify-between'>
-							<div>
-								<div className='text-2xl'>{data.employees?.name}</div>
-								<div className='text-gray-600'>
-									{data.employees?.job_category}
+							<div className='py-2'>
+								<div className='text-2xl capitalize'>
+									{data?.employees?.name}
 								</div>
+								<div className='text-gray-600 capitalize'>
+									{data?.employees?.job_category}
+								</div>{' '}
+								{data?.employees?.status === '1' ? (
+									<div className='text-orange-400 flex gap-1 items-center '>
+										<GoDotFill />
+										Working
+									</div>
+								) : data?.employees?.status === '2' ? (
+									<div className='text-green-500 flex gap-1 items-center '>
+										<GoDotFill />
+										Available for hiring
+									</div>
+								) : (
+									<div className='text-red-500 flex gap-1 items-center'>
+										<GoDotFill />
+										Blacklisted
+									</div>
+								)}
 							</div>
 						</div>
 						<div className='grid grid-cols-1 sm:grid-cols-2 gap-2 w-full pt-4 text-gray-600'>
@@ -54,7 +72,11 @@ const ViewEmployee = () => {
 							</div>
 							<div className='flex gap-2 items-center'>
 								<MdOutlineWatchLater />
-								MRA Calicut
+								{data?.employees.restaurants.reduce(
+									(acc, cur) => (acc += Number(cur.total_experience)),
+									0
+								)}{' '}
+								years of experience
 							</div>
 							<div className='flex gap-2 items-center'>
 								<MdSmartphone />
@@ -63,53 +85,13 @@ const ViewEmployee = () => {
 						</div>
 					</div>
 					<div className='mt-2 flex flex-col justify-between items-center gap-3'>
-						<div className='text-green-500 flex gap-1 items-center'>
-							<GoDotFill className='animate-ping' />
-							Available for hiring
-						</div>
-						<div className='text-[.8rem] font-medium text-gray-600 grid w-full mt-2'>
-							<div className='flex w-full justify-between items-center capitalize'>
-								<h1>Hygiene</h1>
-								<hr className='w-[20%]' />
-								<div>
-									<Rate allowHalf disabled defaultValue={4} />
-								</div>
-							</div>
-							<div className='flex w-full justify-between items-center capitalize'>
-								<h1>waste control</h1>
-								<hr className='w-[20%]' />
-								<div>
-									<Rate allowHalf disabled defaultValue={4} />
-								</div>
-							</div>
-							<div className='flex w-full justify-between items-center capitalize'>
-								<h1>communication</h1>
-								<hr className='w-[20%]' />
-								<div>
-									<Rate allowHalf disabled defaultValue={4} />
-								</div>
-							</div>
-							<div className='flex w-full justify-between items-center capitalize'>
-								<div>Attendance</div>
-								<hr className='w-[20%]' />
-								<div>
-									<Rate allowHalf disabled defaultValue={4} />
-								</div>
-							</div>
-							<div className='flex w-full justify-between items-center capitalize'>
-								<div>Productivity</div>
-								<hr className='w-[20%]' />
-								<div>
-									<Rate allowHalf disabled defaultValue={4.5} />
-								</div>
-							</div>
-						</div>
 						<button
 							onClick={() => setShowModal(true)}
-							className='capitalize border rounded p-2  border-black bg-gray-200'
+							className='capitalize border rounded h-10 text-sm px-2 text-white border-white bg-blue-500'
 						>
 							add experience
 						</button>
+						<AverageRating experiences={data?.employees.restaurants} />
 					</div>
 				</div>
 			</div>
@@ -119,7 +101,7 @@ const ViewEmployee = () => {
 					Experience
 				</div>
 				{isSuccess && (
-					<JobExperienceTimeline experiences={data.employees.restaurants} />
+					<JobExperienceTimeline experiences={data?.employees.restaurants} />
 				)}
 			</div>
 			<Modal

@@ -22,9 +22,10 @@ const JobExperienceTimeline = ({ experiences }) => {
 					<div className='flex justify-center mb-5'>
 						<Card className='w-full md:p-4 border border-gray-200 rounded-lg shadow-md bg-white'>
 							<div>
-								<div className='text-lg font-bold mb-2'>{job.name}</div>
+								<div className='text-lg font-bold mb-2'>{job.job_category}</div>
 								<div className='mb-2 text-sm md:text-base'>
-									<strong>Restaurant:</strong> {job.company}
+									<strong>Restaurant:</strong>{' '}
+									{job?.restaurant_details?.restaurent_name}
 								</div>
 								<div className='mb-2 text-sm md:text-base'>
 									<strong>Experience:</strong> {job.total_experience}

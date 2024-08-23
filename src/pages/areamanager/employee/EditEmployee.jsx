@@ -7,6 +7,8 @@ import { Button, Input, Radio, Select, Upload } from 'antd'
 import * as Yup from 'yup'
 import { CgSpinner } from 'react-icons/cg'
 import TextArea from 'antd/es/input/TextArea'
+import { toast } from 'react-toastify'
+import getBase64 from '../../../utils/convertToBase64'
 
 //imports..........................................................................................
 
@@ -21,38 +23,49 @@ const validationSchema = Yup.object().shape({
 	phone: Yup.string().required('Phone is required'),
 })
 
-const EditEmployee = ({ employee }) => {
+const EditEmployee = ({ employee, handleClose }) => {
 	const { data: categories } = useGetAllCategoriesQuery()
 	const { data: locations } = useGetAllLocationsQuery()
 	const [updateAnEmployee, { isLoading }] = useEditEmployeeMutation()
+	console.log(employee)
 
 	const handleSubmit = async values => {
-		const response = await updateAnEmployee(values)
+		const response = await updateAnEmployee({
+			id: employee.id,
+			credentials: values,
+		})
 		console.log(response)
-
 		if (response?.data?.success) {
 			toast.success(response.data.success)
 			handleClose()
 		} else {
-			toast.error('Employee already exists')
+			toast.error('Employee updation failed')
+		}
+	}
+
+	const toBase64 = async file => {
+		try {
+			const base64 = await getBase64(file)
+			return base64
+		} catch (error) {
+			console.error(error)
 		}
 	}
 
 	return (
-		<div className='flex flex-col overflow-y-auto max-h-screen rounded-lg'>
+		<div className='flex flex-col overflow-y-auto rounded-lg'>
 			<Formik
 				initialValues={{
-					photo: null,
-					aadhar_front: null,
-					aadhar_back: null,
-					name: '',
-					job_category_id: '',
-					address: '',
-					location_id: '',
-					phone: '',
-					status: '',
-					total_experience: 0,
-					case_details: '',
+					photo: employee.photo,
+					aadhar_front: employee.aadhar_front,
+					aadhar_back: employee.aadhar_back,
+					name: employee.name,
+					job_category_id: employee.job_category_id,
+					address: employee.address,
+					location_id: employee.location_id,
+					phone: employee.phone,
+					status: employee.status,
+					case_details: employee.case_details,
 				}}
 				enableReinitialize:true
 				validationSchema={validationSchema}
@@ -66,15 +79,14 @@ const EditEmployee = ({ employee }) => {
 									Photo
 								</label>
 								<Field name='photo'>
-									{({ field }) => (
+									{() => (
 										<Upload
 											name='photo'
 											maxCount={1}
 											listType='picture'
 											beforeUpload={() => false}
-											onChange={info => {
-												setFieldValue('photo', info.file)
-												console.log(info)
+											onChange={async info => {
+												setFieldValue('photo', await toBase64(info.file))
 											}}
 										>
 											<Button icon={<UploadOutlined />}>Upload</Button>
@@ -92,15 +104,15 @@ const EditEmployee = ({ employee }) => {
 									Adhar Front
 								</label>
 								<Field name='aadhar_front'>
-									{({ field }) => (
+									{() => (
 										<Upload
 											name='aadhar_front'
 											maxCount={1}
 											listType='picture'
 											beforeUpload={() => false}
-											onChange={info =>
-												setFieldValue('aadhar_front', info.file)
-											}
+											onChange={async info => {
+												setFieldValue('aadhar_front', await toBase64(info.file))
+											}}
 										>
 											<Button icon={<UploadOutlined />}>Upload</Button>
 										</Upload>
@@ -118,13 +130,15 @@ const EditEmployee = ({ employee }) => {
 									Adhar Back
 								</label>
 								<Field name='aadhar_back'>
-									{({ field }) => (
+									{() => (
 										<Upload
 											name='aadhar_back'
 											maxCount={1}
 											listType='picture'
 											beforeUpload={() => false}
-											onChange={info => setFieldValue('aadhar_back', info.file)}
+											onChange={async info => {
+												setFieldValue('aadhar_back', await toBase64(info.file))
+											}}
 										>
 											<Button icon={<UploadOutlined />}>Upload</Button>
 										</Upload>
@@ -162,7 +176,7 @@ const EditEmployee = ({ employee }) => {
 										<Select
 											name='job_category_id'
 											className='w-full'
-											placeholder='Select a Location'
+											placeholder={employee.job_category}
 											onChange={value =>
 												setFieldValue('job_category_id', value)
 											}
@@ -207,7 +221,7 @@ const EditEmployee = ({ employee }) => {
 										<Select
 											name='location_id'
 											className='w-full'
-											placeholder='Select a Location'
+											placeholder={employee.location_name}
 											onChange={value => setFieldValue('location_id', value)}
 										>
 											{locations?.locations.map(loc => (
@@ -242,11 +256,12 @@ const EditEmployee = ({ employee }) => {
 								<h1>Employee Status</h1>
 								<Radio.Group
 									className='p-3 rounded-md bg-white border'
+									defaultValue={employee.status}
 									onChange={e => setFieldValue('status', e.target.value)}
 								>
-									<Radio value={1}>Working</Radio>
-									<Radio value={2}>Not Working</Radio>
-									<Radio value={3}>Blacklisted</Radio>
+									<Radio value={'1'}>Working</Radio>
+									<Radio value={'2'}>Not Working</Radio>
+									<Radio value={'3'}>Blacklisted</Radio>
 								</Radio.Group>
 								<ErrorMessage
 									name='status'

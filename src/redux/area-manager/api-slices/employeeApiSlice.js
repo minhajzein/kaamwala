@@ -23,10 +23,10 @@ const employeeApiSlice = apiSlice.injectEndpoints({
             invalidatesTags: ['Employees']
         }),
         editEmployee: builder.mutation({
-            query: (id, credentials) => ({
-                url: `/areamanager/employee/${id}`,
+            query: (data) => ({
+                url: `/areamanager/employee/${data.id}`,
                 method: 'PUT',
-                body: { ...credentials }
+                body: { ...data.credentials }
             }),
             invalidatesTags: ['Employees']
         }),

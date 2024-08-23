@@ -24,6 +24,7 @@ const managerApiSlice = apiSlice.injectEndpoints({
             }),
             keepUnusedDataFor: 5
         }),
+
         addAreaManager: builder.mutation({
             query: (credentials) => ({
                 url: 'area-manager',
@@ -32,6 +33,7 @@ const managerApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['Area-Managers']
         }),
+
         editAreaManager: builder.mutation({
             query: (data) => ({
                 url: `/area-manager/${data.id}`,

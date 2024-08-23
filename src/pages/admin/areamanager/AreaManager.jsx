@@ -13,7 +13,6 @@ const AreaManager = () => {
 	const [currentAreaManager, setCurrentAreaManager] = useState(null)
 	const navigate = useNavigate()
 	const { data } = useGetAllAreaManagersQuery()
-	console.log(data)
 
 	const handleCloseEditModal = () => {
 		setShowEditModal(false)

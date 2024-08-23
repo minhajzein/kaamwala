@@ -5,10 +5,12 @@ import Modal from '../../../components/Modal'
 import { StaffColumns } from '../../../components/table/Columns/StaffColumns'
 import EditEmployee from './EditEmployee'
 import { useGetAllEmployeesUnderAreaManagerQuery } from '../../../redux/area-manager/api-slices/employeeApiSlice'
-import { useSelector } from 'react-redux'
+
+//imports................................................................
 
 const Employee = () => {
 	const [showEditModal, setShowEditModal] = useState(false)
+	const [currentEmployee, setCurrentEmployee] = useState(null)
 	const navigate = useNavigate()
 
 	const handleCloseEditModal = () => {
@@ -18,7 +20,9 @@ const Employee = () => {
 	const handleView = employee => {
 		navigate(`/area-manager/employee/profile/${employee.id}`)
 	}
-	const handleEdit = id => {
+
+	const handleEdit = data => {
+		setCurrentEmployee(data)
 		setShowEditModal(true)
 	}
 
@@ -42,7 +46,12 @@ const Employee = () => {
 					onClose={handleCloseEditModal}
 					id='edit-kaamwala-admin'
 					title='Edit Employee'
-					content={<EditEmployee handleClose={handleCloseEditModal} />}
+					content={
+						<EditEmployee
+							employee={currentEmployee}
+							handleClose={handleCloseEditModal}
+						/>
+					}
 					size='big'
 				/>
 			)}

@@ -19,7 +19,10 @@ const AreaManagerRoute = () => {
 					<Route path='/' element={<AreaManagerLayout />}>
 						<Route path='/' element={<Dashboard />} />
 						<Route path='/restaurant' element={<Restaurant />} />
-						<Route path='/restaurant/profile' element={<RestaurantProfile />} />
+						<Route
+							path='/restaurant/profile/:id'
+							element={<RestaurantProfile />}
+						/>
 						<Route path='/profile' element={<Profile />} />
 						<Route path='/employee' element={<Employee />} />
 						<Route path='/employee/profile/:id' element={<ViewEmployee />} />
