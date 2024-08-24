@@ -56,7 +56,7 @@ const AddEmployee = ({ handleClose }) => {
 	}
 
 	return (
-		<div className='flex flex-col overflow-y-auto max-h-screen rounded-lg'>
+		<div className='flex flex-col rounded-lg'>
 			<Formik
 				initialValues={{
 					photo: null,

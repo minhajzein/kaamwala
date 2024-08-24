@@ -16,81 +16,48 @@ const JobExperienceTimeline = ({ experiences }) => {
 	}
 
 	return (
-		<Timeline mode='left' className='space-y-6'>
+		<Timeline mode='left'>
 			{experiences?.map((job, index) => (
 				<Timeline.Item key={job.id} className='fade-in-up'>
-					<div className='flex justify-center mb-5'>
-						<Card className='w-full md:p-4 border border-gray-200 rounded-lg shadow-md bg-white'>
-							<div>
-								<div className='text-lg font-bold mb-2'>{job.job_category}</div>
-								<div className='mb-2 text-sm md:text-base'>
-									<strong>Restaurant:</strong>{' '}
-									{job?.restaurant_details?.restaurent_name}
+					<div className='w-full border border-gray-200 p-2 rounded-lg shadow-md bg-white'>
+						<div className='text-lg font-bold mb-2'>{job.job_category}</div>
+						<div className='mb-2 text-sm md:text-base'>
+							<strong>Restaurant:</strong>{' '}
+							{job?.restaurant_details?.restaurent_name}
+						</div>
+						<div className='mb-2 text-sm md:text-base'>
+							<strong>Experience:</strong> {job.total_experience}
+						</div>
+						{expanded[index] && (
+							<div className='flex flex-col mt-2'>
+								<div className='flex items-center justify-between'>
+									<h1 className='w-1/2'>Hygiene:</h1>
+									<Rate disabled defaultValue={job.hygiene} />
 								</div>
-								<div className='mb-2 text-sm md:text-base'>
-									<strong>Experience:</strong> {job.total_experience}
+								<div className='flex items-center justify-between'>
+									<h1 className='w-1/2'>Wastage Control:</h1>
+									<Rate disabled defaultValue={job.wastage_control} />
 								</div>
-								{expanded[index] && (
-									<div className='grid grid-cols-1 md:grid-cols-2 gap-4 mt-2'>
-										<div>
-											{job.case === '1' && (
-												<div className='mb-2 text-xs  md:text-base'>
-													<strong>Case:</strong> {job.case}
-												</div>
-											)}
-										</div>
-										<div className='space-y-2 text-xs md:text-sm'>
-											<div className='flex items-center'>
-												<strong className='w-1/2'>Hygiene:</strong>
-												<Rate
-													className='text-xs md:text-base'
-													disabled
-													defaultValue={job.hygiene}
-												/>
-											</div>
-											<div className='flex items-center'>
-												<strong className='w-1/2'>Wastage Control:</strong>
-												<Rate
-													className='text-xs md:text-base'
-													disabled
-													defaultValue={job.wastage_control}
-												/>
-											</div>
-											<div className='flex items-center'>
-												<strong className='w-1/2'>Communication:</strong>
-												<Rate
-													className='text-xs md:text-base'
-													disabled
-													defaultValue={job.communication}
-												/>
-											</div>
-											<div className='flex items-center'>
-												<strong className='w-1/2'>Attendance:</strong>
-												<Rate
-													className='text-xs md:text-base'
-													disabled
-													defaultValue={job.attenance}
-												/>
-											</div>
-											<div className='flex items-center'>
-												<strong className='w-1/2'>Productivity:</strong>
-												<Rate
-													className='text-xs md:text-base'
-													disabled
-													defaultValue={job.productivity}
-												/>
-											</div>
-										</div>
-									</div>
-								)}
-								<button
-									className='text-blue-500 mt-2'
-									onClick={() => toggleExpand(index)}
-								>
-									{expanded[index] ? 'Show Less' : 'Show More'}
-								</button>
+								<div className='flex items-center justify-between'>
+									<h1 className='w-1/2'>Communication:</h1>
+									<Rate disabled defaultValue={job.communication} />
+								</div>
+								<div className='flex items-center justify-between'>
+									<h1 className='w-1/2'>Attendance:</h1>
+									<Rate disabled defaultValue={job.attenance} />
+								</div>
+								<div className='flex items-center justify-between'>
+									<h1 className='w-1/2'>Productivity:</h1>
+									<Rate disabled defaultValue={job.productivity} />
+								</div>
 							</div>
-						</Card>
+						)}
+						<button
+							className='text-blue-500 mt-2'
+							onClick={() => toggleExpand(index)}
+						>
+							{expanded[index] ? 'Show Less' : 'Show More'}
+						</button>
 					</div>
 				</Timeline.Item>
 			))}

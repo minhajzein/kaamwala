@@ -7,7 +7,6 @@ import ViewStaffs from '../admin/staffs/ViewStaffs'
 function SingleEmployee() {
 	const { id } = useParams()
 	const { data } = useGetSingleEmployeeQuery(id)
-	console.log(data)
 
 	return (
 		<div className='w-full p-4'>

@@ -68,10 +68,10 @@ const Modal = ({ visibles, onClose, id, content, title, size = 'md' }) => {
 			aria-modal='true'
 			role='dialog'
 			aria-labelledby='modal-title'
-			className='max-h-dvh overflow-y-auto fixed top-0 py-4'
+			className='h-dvh py-4 fixed'
 		>
 			<div
-				className={`drop-shadow-md bg-white bg-opacity-90 backdrop-blur-[.4rem] backdrop-filter p-2 md:p-3  md:px-3 rounded-lg shadow-2xl border w-full mx-2 ${getSizeClasses()}`}
+				className={`drop-shadow-md bg-white bg-opacity-90 backdrop-blur-[.4rem] overflow-y-auto max-h-dvh backdrop-filter p-2 md:p-3  md:px-3 rounded-lg shadow-2xl border w-full ${getSizeClasses()}`}
 				onClick={e => e.stopPropagation()}
 			>
 				<div className='flex justify-between items-center'>

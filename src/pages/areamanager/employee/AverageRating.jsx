@@ -4,7 +4,7 @@ import { Rate } from 'antd'
 
 function AverageRating({ experiences }) {
 	return (
-		<div className='text-[.8rem] font-medium text-gray-600 grid w-full mt-2'>
+		<div className='text-gray-600 grid w-full mt-2'>
 			<div className='flex w-full justify-between items-center capitalize'>
 				<h1>Hygiene</h1>
 				<hr className='w-[10%] md:w-[20%]' />

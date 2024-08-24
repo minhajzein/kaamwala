@@ -1,83 +1,68 @@
 import avatar from '/Images/avatar.jpg'
-import { GoDotFill } from 'react-icons/go'
-import { MdMyLocation, MdOutlineWatchLater, MdSmartphone } from 'react-icons/md'
+import { MdOutlineWatchLater, MdSmartphone } from 'react-icons/md'
 import { IoLocation } from 'react-icons/io5'
 import { FaGraduationCap } from 'react-icons/fa'
 import JobExperienceTimeline from '../../../components/common/JobExperienseTimeline'
-import { useGetSingleEmployeeQuery } from '../../../redux/admin/api-slices/employeeApiSlice'
-import { useParams } from 'react-router-dom'
+import { HiringStatus } from '../../../components/table/Columns/StaffColumns'
+import { PiAddressBookLight } from 'react-icons/pi'
+import AverageRating from '../../areamanager/employee/AverageRating'
 
 //imports................................................................
 
 const ViewStaffs = ({ employee }) => {
-	const { id } = useParams()
-	const { data, isSuccess } = useGetSingleEmployeeQuery(id)
-
-	if (employee === undefined && isSuccess) {
-		employee = data.employees
-	}
-
 	return (
-		<div className='p-4'>
-			<div className='bg-white md:p-5 flex flex-col md:flex-row rounded-md border'>
-				<div className='rounded-md w-full md:w-1/4'>
+		<div className='flex flex-col gap-2'>
+			<div className='bg-white flex flex-col gap-2 p-2 md:p-4 rounded-md border'>
+				<div className='rounded-md w-full flex flex-col md:flex-row'>
 					<img
 						src={employee?.photo !== 'null' ? employee.photo : avatar}
-						className='rounded-md w-48 p-2 border-2'
+						className='rounded-md md:w-1/2 w-full p-2 border-2'
 						alt='avatar'
 					/>
-				</div>
-				<div className='w-full md:w-3/4 p-2'>
-					<div className='flex flex-col lg:flex-row justify-between'>
-						<div className='flex flex-col'>
-							<div className='text-2xl capitalize'>{employee?.name}</div>
-							<div className='text-gray-600 capitalize'>
-								{employee?.job_category}
+					<div className='md:w-1/2 w-full flex flex-col gap-3 justify-between p-2'>
+						<div className='flex flex-col justify-between'>
+							<div className='flex flex-col'>
+								<div className='text-3xl font-semibold capitalize'>
+									{employee?.name}
+								</div>
+								<div className='text-gray-600 capitalize'>
+									{employee?.job_category}
+								</div>
 							</div>
 						</div>
+						<HiringStatus hiringStatus={employee?.status} />
 					</div>
-					<div className='mt-2 flex flex-col'>
-						{employee?.status === '1' ? (
-							<div className='text-orange-400 flex gap-1 items-center '>
-								<GoDotFill />
-								Working
-							</div>
-						) : employee?.status === '2' ? (
-							<div className='text-green-500 flex gap-1 items-center '>
-								<GoDotFill />
-								Available for hiring
-							</div>
-						) : (
-							<div className='text-red-500 flex gap-1 items-center'>
-								<GoDotFill />
-								Blacklisted
-							</div>
-						)}
-					</div>
-					{employee?.status !== '1' && (
-						<div className='grid grid-cols-1 sm:grid-cols-2 gap-2 w-full pt-4 text-gray-600'>
-							<div className='flex gap-2 items-center'>
-								<MdMyLocation />
-								{employee?.address}
-							</div>
-							<div className='flex gap-2 items-center'>
-								<IoLocation />
-								{employee?.location_name}
-							</div>
-							<div className='flex gap-2 items-center'>
-								<MdOutlineWatchLater />
-								{employee?.total_experience} years of experience
-							</div>
-							<div className='flex gap-2 items-center'>
-								<MdSmartphone />
-								{employee?.phone}
-							</div>
-						</div>
-					)}
 				</div>
+				{employee?.status !== '1' && (
+					<div className='grid md:grid-cols-2 gap-2 w-full text-gray-600'>
+						<div className='flex gap-2 items-center'>
+							<PiAddressBookLight />
+							{employee?.address}
+						</div>
+						<div className='flex gap-2 items-center'>
+							<IoLocation />
+							{employee?.location_name}
+						</div>
+						<div className='flex gap-2 items-center'>
+							<MdOutlineWatchLater />
+							{employee.restaurants.reduce(
+								(acc, cur) => (acc += Number(cur.total_experience)),
+								0
+							)}{' '}
+							years of experience
+						</div>
+						<div className='flex gap-2 items-center'>
+							<MdSmartphone />
+							{employee?.phone}
+						</div>
+					</div>
+				)}
+				{employee?.restaurants.length > 0 && (
+					<AverageRating experiences={employee?.restaurants} />
+				)}
 			</div>
-			{employee?.status !== '1' && (
-				<div className='bg-white border rounded-sm md:p-4 p-2 mt-4'>
+			{employee?.status !== '1' && employee?.restaurants.length > 0 && (
+				<div className='bg-white border rounded-sm md:p-4 p-2'>
 					<div className='flex gap-2 items-center mb-5'>
 						<FaGraduationCap />
 						Experience
