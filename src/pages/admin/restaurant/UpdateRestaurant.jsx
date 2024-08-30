@@ -187,8 +187,16 @@ const UpdateRestaurant = ({ handleClose, restaurant }) => {
 						</label>
 						<Select
 							onChange={value => formik.setFieldValue('location_id', value)}
-							placeholder={restaurant.location_name}
 							className='w-full text-xl'
+							showSearch
+							defaultValue={restaurant.location_name}
+							optionFilterProp='children'
+							filterOption={(input, option) =>
+								option.props.children
+									.toLowerCase()
+									.indexOf(input.toLowerCase()) >= 0
+							}
+							size='large'
 						>
 							{locations?.locations.map(loc => (
 								<Option value={loc.id}>{loc.location}</Option>

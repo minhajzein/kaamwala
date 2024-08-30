@@ -12,7 +12,7 @@ const SearchFilter = ({
 	jobOptions,
 	locationOptions,
 	setSearch,
-	onSearch,
+	search,
 }) => {
 	return (
 		<div className="bg-[url('/Images/kaamwala.jpg')] flex flex-col gap-4 md:px-14 bg-cover bg-center w-full p-2">
@@ -33,10 +33,12 @@ const SearchFilter = ({
 			<div className='w-full flex flex-col gap-2'>
 				<div className='flex border p-2 rounded-xl bg-primary-50 shadow-lg  flex-col gap-2'>
 					<div className='flex z-50 md:gap-2 gap-1 border-gray-200 w-full rounded-lg'>
-						<Input
-							placeholder='Employee Code'
-							onChange={e => onSearch(e.target.value)}
-							className='p-2 w-full border border-primary-400'
+						<input
+							type='search'
+							placeholder='Search here...'
+							value={search}
+							onChange={e => setSearch(e.target.value)}
+							className='p-2 w-full border outline-none rounded-lg border-primary-400'
 						/>
 					</div>
 					<div className='flex gap-2 md:gap-4'>

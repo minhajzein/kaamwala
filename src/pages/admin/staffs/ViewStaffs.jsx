@@ -6,11 +6,22 @@ import JobExperienceTimeline from '../../../components/common/JobExperienseTimel
 import { HiringStatus } from '../../../components/table/Columns/StaffColumns'
 import { PiAddressBookLight } from 'react-icons/pi'
 import AverageRating from '../../areamanager/employee/AverageRating'
+import { useGetSingleEmployeeQuery } from '../../../redux/admin/api-slices/employeeApiSlice'
+import { useParams } from 'react-router-dom'
+import { CgSpinner } from 'react-icons/cg'
 
 //imports................................................................
 
 const ViewStaffs = ({ employee }) => {
-	return (
+	const { id } = useParams()
+	const { data, isLoading } = useGetSingleEmployeeQuery(id)
+	if (employee === undefined) employee = data?.employees
+
+	return isLoading ? (
+		<div className='w-full flex'>
+			<CgSpinner className='animate-spin m-auto' />
+		</div>
+	) : (
 		<div className='flex flex-col gap-2'>
 			<div className='bg-white flex flex-col gap-2 p-2 md:p-4 rounded-md border'>
 				<div className='rounded-md w-full flex flex-col md:flex-row'>

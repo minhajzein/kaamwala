@@ -34,7 +34,7 @@ const Restaurant = () => {
 			<DataTable
 				data={data?.restaurents}
 				columns={columns}
-				filterColumn='location'
+				filterColumn='location_name'
 				title={'Restaurant'}
 				type='modal'
 			/>

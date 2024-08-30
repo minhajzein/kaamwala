@@ -1,5 +1,5 @@
 import { Tooltip } from 'antd'
-import { FaRegEye } from 'react-icons/fa'
+import { FaRegEye, FaRegTrashAlt } from 'react-icons/fa'
 import { RiEditLine } from 'react-icons/ri'
 
 export const HiringStatus = ({ hiringStatus }) => {
@@ -17,17 +17,27 @@ export const HiringStatus = ({ hiringStatus }) => {
 			{hiringStatus === '1'
 				? 'Working'
 				: hiringStatus === '2'
-				? 'Eligible to Hire'
+				? 'Ready to Hire'
 				: 'Blacklisted'}
 		</span>
 	)
 }
 
-const StaffColumns = (viewActionClick, editActionClick) => [
+const StaffColumns = (viewActionClick, editActionClick, deleteActionClick) => [
 	{ Header: 'ID', accessor: 'id' },
 	{ Header: 'EMP Code', accessor: 'employee_code' },
 	{ Header: 'Name', accessor: 'name' },
-	{ Header: 'Job Title', accessor: 'job_category' },
+	{
+		Header: 'Job Titles',
+		accessor: 'job_categories',
+		Cell: ({ row }) => (
+			<ul>
+				{row?.original?.job_categories.map((category, i) => (
+					<li key={i}>{category}</li>
+				))}
+			</ul>
+		),
+	},
 	{ Header: 'Location', accessor: 'location_name' },
 	{ Header: 'Phone', accessor: 'phone' },
 	{
@@ -54,6 +64,14 @@ const StaffColumns = (viewActionClick, editActionClick) => [
 						className='flex items-center justify-center p-1 bg-green-100 text-zinc-800 rounded border border-zinc-400 hover:bg-green-50 focus:outline-none focus:ring-2  text-xs md:text-sm'
 					>
 						<RiEditLine className='text-lg' />
+					</button>
+				</Tooltip>
+				<Tooltip title='Delete' placement='top'>
+					<button
+						onClick={() => deleteActionClick(row.original)}
+						className='flex items-center justify-center p-1 bg-red-100 text-zinc-800 rounded border border-zinc-400 hover:bg-green-50 focus:outline-none focus:ring-2  text-xs md:text-sm'
+					>
+						<FaRegTrashAlt className='text-lg' />
 					</button>
 				</Tooltip>
 			</div>

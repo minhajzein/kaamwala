@@ -13,10 +13,10 @@ function AverageRating({ experiences }) {
 						allowHalf
 						disabled
 						defaultValue={
-							experiences.reduce(
+							experiences?.reduce(
 								(acc, cur) => (acc += Number(cur.hygiene)),
 								0
-							) / experiences.length
+							) / experiences?.length
 						}
 					/>
 				</div>
@@ -29,10 +29,10 @@ function AverageRating({ experiences }) {
 						allowHalf
 						disabled
 						defaultValue={
-							experiences.reduce(
+							experiences?.reduce(
 								(acc, cur) => (acc += Number(cur.wastage_control)),
 								0
-							) / experiences.length
+							) / experiences?.length
 						}
 					/>
 				</div>
@@ -45,10 +45,10 @@ function AverageRating({ experiences }) {
 						allowHalf
 						disabled
 						defaultValue={
-							experiences.reduce(
+							experiences?.reduce(
 								(acc, cur) => (acc += Number(cur.communication)),
 								0
-							) / experiences.length
+							) / experiences?.length
 						}
 					/>
 				</div>
@@ -61,10 +61,10 @@ function AverageRating({ experiences }) {
 						allowHalf
 						disabled
 						defaultValue={
-							experiences.reduce(
+							experiences?.reduce(
 								(acc, cur) => (acc += Number(cur.attenance)),
 								0
-							) / experiences.length
+							) / experiences?.length
 						}
 					/>
 				</div>
@@ -77,10 +77,10 @@ function AverageRating({ experiences }) {
 						allowHalf
 						disabled
 						defaultValue={
-							experiences.reduce(
+							experiences?.reduce(
 								(acc, cur) => (acc += Number(cur.productivity)),
 								0
-							) / experiences.length
+							) / experiences?.length
 						}
 					/>
 				</div>

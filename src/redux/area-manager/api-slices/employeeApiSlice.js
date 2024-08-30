@@ -30,6 +30,13 @@ const employeeApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['Employees']
         }),
+        deleteEmployee: builder.mutation({
+            query: (id) => ({
+                url: `/areamanager/employee/${id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['Employees']
+        }),
         getSingleEmployeeUnderAreaManager: builder.query({
             query: (id) => ({
                 url: `/areamanager/employee/${id}`,
@@ -47,6 +54,22 @@ const employeeApiSlice = apiSlice.injectEndpoints({
                 body: { ...data.credentials }
             }),
             invalidatesTags: ['Employee']
+        }),
+
+        editEmployeeExperience: builder.mutation({
+            query: (data) => ({
+                url: `/employee-experience/${data.id}`,
+                method: 'PUT',
+                body: { ...data.credentials }
+            }),
+            invalidatesTags: ['Employee']
+        }),
+        deleteExperience: builder.mutation({
+            query: (id) => ({
+                url: `/employee-experience/${id}`,
+                method: 'DELETE'
+            }),
+            invalidatesTags: ['Employee']
         })
     })
 })
@@ -56,5 +79,8 @@ export const {
     useGetSingleEmployeeUnderAreaManagerQuery,
     useAddEmployeeMutation,
     useEditEmployeeMutation,
-    useAddExperienceMutation
+    useAddExperienceMutation,
+    useDeleteEmployeeMutation,
+    useDeleteExperienceMutation,
+    useEditEmployeeExperienceMutation
 } = employeeApiSlice

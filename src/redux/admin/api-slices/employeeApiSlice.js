@@ -17,7 +17,7 @@ const employeeApiSlice = apiSlice.injectEndpoints({
         getSingleEmployee: builder.query({
             query: (id) => ({
                 url: `/employee/${id}`,
-                validateStatus: (response, result) => {
+                validateStatus: (response) => {
                     return response.status === 200
                 }
             }),

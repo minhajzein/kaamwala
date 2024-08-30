@@ -13,11 +13,11 @@ const { TextArea } = Input
 //imports................................................................
 
 const validationSchema = Yup.object().shape({
-	photo: Yup.string().required('Photo is required'),
-	aadhar_front: Yup.string().required('Adhar front is required'),
-	aadhar_back: Yup.string().required('Adhar back is required'),
+	photo: Yup.string(),
+	aadhar_front: Yup.string(),
+	aadhar_back: Yup.string(),
 	name: Yup.string().required('Name is required'),
-	job_category_id: Yup.string().required('Job is required'),
+	job_categories: Yup.array().required('Job is required'),
 	address: Yup.string().required('Address is required'),
 	location_id: Yup.string().required('Location is required'),
 	phone: Yup.string().required('Phone is required'),
@@ -36,8 +36,6 @@ const AddEmployee = ({ handleClose }) => {
 
 	const handleSubmit = async values => {
 		const response = await addAnEmployee(values)
-		console.log(response)
-
 		if (response?.data?.success) {
 			toast.success(response.data.success)
 			handleClose()
@@ -63,7 +61,7 @@ const AddEmployee = ({ handleClose }) => {
 					aadhar_front: null,
 					aadhar_back: null,
 					name: '',
-					job_category_id: '',
+					job_categories: [],
 					address: '',
 					location_id: '',
 					phone: '',
@@ -104,7 +102,7 @@ const AddEmployee = ({ handleClose }) => {
 							</div>
 							<div>
 								<label className='block text-sm font-medium text-gray-700'>
-									Adhar Front
+									Aadhar Front
 								</label>
 								<Field name='aadhar_front'>
 									{({ field }) => (
@@ -132,7 +130,7 @@ const AddEmployee = ({ handleClose }) => {
 							</div>
 							<div>
 								<label className='block text-sm font-medium text-gray-700'>
-									Adhar Back
+									Aadhar Back
 								</label>
 								<Field name='aadhar_back'>
 									{({ field }) => (
@@ -174,24 +172,32 @@ const AddEmployee = ({ handleClose }) => {
 								<label className='block text-sm font-medium text-gray-700'>
 									Job
 								</label>
-								<Field name='job_category_id'>
+								<Field name='job_categories'>
 									{({ field }) => (
 										<Select
-											name='job_category_id'
+											name='job_categories'
 											className='w-full'
 											placeholder='Select a Role'
-											onChange={value =>
-												setFieldValue('job_category_id', value)
+											onChange={value => setFieldValue('job_categories', value)}
+											mode='multiple'
+											showSearch
+											optionFilterProp='children'
+											filterOption={(input, option) =>
+												option.props.children
+													.toLowerCase()
+													.indexOf(input.toLowerCase()) >= 0
 											}
 										>
 											{categories?.jobCategories.map(category => (
-												<Option value={category.id}>{category.category}</Option>
+												<Option value={category.category}>
+													{category.category}
+												</Option>
 											))}
 										</Select>
 									)}
 								</Field>
 								<ErrorMessage
-									name='job_category_id'
+									name='job_categories'
 									component='div'
 									className='text-red-500 text-xs mt-1'
 								/>
@@ -222,6 +228,13 @@ const AddEmployee = ({ handleClose }) => {
 											className='w-full'
 											placeholder='Select a Location'
 											onChange={value => setFieldValue('location_id', value)}
+											showSearch
+											optionFilterProp='children'
+											filterOption={(input, option) =>
+												option.props.children
+													.toLowerCase()
+													.indexOf(input.toLowerCase()) >= 0
+											}
 										>
 											{locations?.locations.map(loc => (
 												<Option value={loc.id}>{loc.location}</Option>

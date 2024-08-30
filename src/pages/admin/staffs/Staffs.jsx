@@ -5,12 +5,16 @@ import { useGetAllEmployeesQuery } from '../../../redux/admin/api-slices/employe
 import Modal from '../../../components/Modal'
 import { useState } from 'react'
 import EditEmployee from '../../areamanager/employee/EditEmployee'
+import { useDeleteEmployeeMutation } from '../../../redux/area-manager/api-slices/employeeApiSlice'
+import { toast } from 'react-toastify'
 
 //imports............................................................................
 
 const Staffs = () => {
 	const [showEditModal, setShowEditModal] = useState(false)
 	const [currentEmployee, setCurrentEmployee] = useState(null)
+	const [deleteEmplyee, { isLoading }] = useDeleteEmployeeMutation()
+
 	const navigate = useNavigate()
 
 	const handleView = data => {
@@ -26,7 +30,21 @@ const Staffs = () => {
 		setShowEditModal(true)
 	}
 
-	const columns = StaffColumns(handleView, handleEdit)
+	const handleDelete = async data => {
+		try {
+			const response = await deleteEmplyee(data.id)
+			if (response?.data?.success) {
+				toast.success(response.data.success)
+			} else {
+				toast.error('Deletion failed')
+			}
+		} catch (error) {
+			console.error(error)
+		}
+	}
+
+	const columns = StaffColumns(handleView, handleEdit, handleDelete)
+
 	const { data } = useGetAllEmployeesQuery()
 
 	return (
@@ -35,7 +53,7 @@ const Staffs = () => {
 				data={data?.employees}
 				columns={columns}
 				filterColumn='location_name'
-				filterColumn2='job_category'
+				filterColumn2='job_categories'
 				type={'modal'}
 				title={'Employee'}
 			/>

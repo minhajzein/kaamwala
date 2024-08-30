@@ -2,12 +2,14 @@ import { useGetDashboardDataQuery } from '../../../redux/admin/api-slices/dashbo
 import Cards from './Cards'
 import DataTable from '../../../components/table/DataTable'
 import { StaffColumns } from '../../../components/table/Columns/StaffColumns'
+import { RecentEmployeesColumns } from '../../../components/table/Columns/RecentEmployeeColumns'
 
 //imports................................................................................................
 
 const Dashboard = () => {
 	const { data } = useGetDashboardDataQuery()
-	const columns = StaffColumns()
+	const columns = RecentEmployeesColumns()
+
 	return (
 		<div>
 			<Cards
@@ -19,8 +21,8 @@ const Dashboard = () => {
 			<DataTable
 				data={data?.recentEmployees}
 				columns={columns}
-				filterColumn='job_category'
-				filterColumn2='location_name'
+				filterColumn2='job_categories'
+				filterColumn='location_name'
 				title={'recent employees'}
 				nopagination={true}
 			/>

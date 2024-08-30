@@ -4,13 +4,18 @@ import DataTable from '../../../components/table/DataTable'
 import Modal from '../../../components/Modal'
 import { StaffColumns } from '../../../components/table/Columns/StaffColumns'
 import EditEmployee from './EditEmployee'
-import { useGetAllEmployeesUnderAreaManagerQuery } from '../../../redux/area-manager/api-slices/employeeApiSlice'
+import {
+	useDeleteEmployeeMutation,
+	useGetAllEmployeesUnderAreaManagerQuery,
+} from '../../../redux/area-manager/api-slices/employeeApiSlice'
 
 //imports................................................................
 
 const Employee = () => {
 	const [showEditModal, setShowEditModal] = useState(false)
 	const [currentEmployee, setCurrentEmployee] = useState(null)
+	const [deleteEmplyee, { isLoading }] = useDeleteEmployeeMutation()
+
 	const navigate = useNavigate()
 
 	const handleCloseEditModal = () => {
@@ -26,17 +31,30 @@ const Employee = () => {
 		setShowEditModal(true)
 	}
 
+	const handleDelete = async data => {
+		try {
+			const response = await deleteEmplyee(data.id)
+			if (response?.data?.success) {
+				toast.success(response.data.success)
+			} else {
+				toast.error('Deletion failed')
+			}
+		} catch (error) {
+			console.error(error)
+		}
+	}
+
 	const { data } = useGetAllEmployeesUnderAreaManagerQuery()
 
-	const columns = StaffColumns(handleView, handleEdit)
+	const columns = StaffColumns(handleView, handleEdit, handleDelete)
 
 	return (
 		<>
 			<DataTable
 				data={data?.employees}
 				columns={columns}
-				filterColumn='job_category'
-				filterColumn2='location_name'
+				filterColumn='location_name'
+				filterColumn2='job_categories'
 				title={'Employee'}
 				type={'modal'}
 			/>

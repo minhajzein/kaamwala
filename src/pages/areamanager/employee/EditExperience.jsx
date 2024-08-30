@@ -1,33 +1,35 @@
-import { Select, DatePicker, Rate, Radio } from 'antd'
-import { useGetAllRestaurantsQuery } from '../../../redux/admin/api-slices/restaurantApiSlice'
+import { DatePicker, Form, Radio, Rate, Select } from 'antd'
 import { useFormik } from 'formik'
-import * as Yup from 'yup'
-import { useAddExperienceMutation } from '../../../redux/area-manager/api-slices/employeeApiSlice'
-import { useParams } from 'react-router-dom'
 import { CgSpinner } from 'react-icons/cg'
+import * as Yup from 'yup'
+import { useGetAllRestaurantsQuery } from '../../../redux/admin/api-slices/restaurantApiSlice'
+import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import dayjs from 'dayjs'
+import { useEditEmployeeExperienceMutation } from '../../../redux/area-manager/api-slices/employeeApiSlice'
 
-//imports................................................................................................
+//imports................................................................
 
-function AddExperience({ setShowModal }) {
-	const { data } = useGetAllRestaurantsQuery()
-	const [addExperience, { isLoading }] = useAddExperienceMutation()
-	const { id } = useParams()
+function EditExperience({ experience, setShowModal }) {
+	const { data, isLoading } = useGetAllRestaurantsQuery()
+	const [editExperience, { isLoading: editing }] =
+		useEditEmployeeExperienceMutation()
 
 	const formik = useFormik({
 		initialValues: {
-			restaurent_id: '',
-			start_date: '',
-			end_date: '',
-			total_experience: 0,
-			case: false,
-			case_details: '',
-			hygiene: 0,
-			wastage_control: 0,
-			communication: 0,
-			attenance: 0,
-			productivity: 0,
+			restaurent_id: experience.restaurent_id,
+			start_date: experience.start_date,
+			end_date: experience.end_date,
+			total_experience: experience.total_experience,
+			case: experience.case,
+			case_details: experience.case_details ? experience.case_details : '',
+			hygiene: experience.hygiene,
+			wastage_control: experience.wastage_control,
+			communication: experience.communication,
+			attenance: experience.attenance,
+			productivity: experience.productivity,
 		},
+		enableReinitialize: true,
 		validationSchema: Yup.object({
 			restaurent_id: Yup.string().required('Please select a restaurant'),
 			start_date: Yup.string().required(),
@@ -43,7 +45,11 @@ function AddExperience({ setShowModal }) {
 		}),
 		onSubmit: async values => {
 			try {
-				const response = await addExperience({ id, credentials: values })
+				const response = await editExperience({
+					id: experience.id,
+					credentials: values,
+				})
+
 				if (response?.data?.success) {
 					toast.success(response.data.success)
 					formik.resetForm()
@@ -86,6 +92,9 @@ function AddExperience({ setShowModal }) {
 					onChange={value => formik.setFieldValue('restaurent_id', value)}
 					showSearch
 					optionFilterProp='children'
+					defaultValue={experience?.restaurant_details?.restaurent_name}
+					loading={isLoading}
+					id='restaurent_id'
 					filterOption={(input, option) =>
 						option.props.children.toLowerCase().indexOf(input.toLowerCase()) >=
 						0
@@ -104,7 +113,13 @@ function AddExperience({ setShowModal }) {
 				)}
 			</div>
 			<div className='flex flex-col'>
-				<DatePicker.RangePicker onChange={calculateExp} />
+				<DatePicker.RangePicker
+					onChange={calculateExp}
+					defaultValue={[
+						dayjs(formik.values.start_date, 'YYYY/MM/DD'),
+						dayjs(formik.values.end_date, 'YYYY/MM/DD'),
+					]}
+				/>
 				{formik.touched.end_date && (
 					<p className='text-red-500 text-[10px]'>{formik.errors.end_date}</p>
 				)}
@@ -112,6 +127,7 @@ function AddExperience({ setShowModal }) {
 			<input
 				type='number'
 				className='border rounded p-1'
+				name='total_experience'
 				disabled
 				placeholder={`Total Years of Experience : ${formik.values.total_experience} `}
 			/>
@@ -120,12 +136,18 @@ function AddExperience({ setShowModal }) {
 			<div className='flex w-full items-center justify-between'>
 				<h1>Hygiene</h1>
 				<hr className='w-[20%]' />
-				<Rate onChange={value => formik.setFieldValue('hygiene', value)} />
+				<Rate
+					id='hygiene'
+					defaultValue={formik.values.hygiene}
+					onChange={value => formik.setFieldValue('hygiene', value)}
+				/>
 			</div>
 			<div className='flex w-full items-center justify-between'>
 				<h1>Wastage Control</h1>
 				<hr className='w-[20%]' />
 				<Rate
+					defaultValue={formik.values.wastage_control}
+					id='wastage_control'
 					onChange={value => formik.setFieldValue('wastage_control', value)}
 				/>
 			</div>
@@ -133,32 +155,46 @@ function AddExperience({ setShowModal }) {
 				<h1>Communication</h1>
 				<hr className='w-[20%]' />
 				<Rate
+					defaultValue={formik.values.communication}
+					id='communication'
 					onChange={value => formik.setFieldValue('communication', value)}
 				/>
 			</div>
 			<div className='flex w-full items-center justify-between'>
 				<h1>Attendance</h1>
 				<hr className='w-[20%]' />
-				<Rate onChange={value => formik.setFieldValue('attenance', value)} />
+				<Rate
+					defaultValue={formik.values.attenance}
+					id='attenance'
+					onChange={value => formik.setFieldValue('attenance', value)}
+				/>
 			</div>
 			<div className='flex w-full items-center justify-between'>
 				<h1>Productivity</h1>
 				<hr className='w-[20%]' />
-				<Rate onChange={value => formik.setFieldValue('productivity', value)} />
+				<Rate
+					defaultValue={formik.values.productivity}
+					id='productivity'
+					onChange={value => formik.setFieldValue('productivity', value)}
+				/>
 			</div>
 			<hr />
 			<h1 className='capitalize underline'>Case Details</h1>
 			<div className='flex flex-col'>
-				<Radio.Group onChange={formik.handleChange} name='case'>
-					<Radio value={true}>yes</Radio>
-					<Radio value={false}>no</Radio>
+				<Radio.Group
+					onChange={formik.handleChange}
+					name='case'
+					defaultValue={formik.values.case}
+				>
+					<Radio value={'1'}>yes</Radio>
+					<Radio value={'0'}>no</Radio>
 				</Radio.Group>
 				{formik.touched.case && (
 					<p className='text-red-500 text-[10px]'>{formik.errors.case}</p>
 				)}
 			</div>
 
-			{formik.values.case && (
+			{formik.values.case !== '0' && (
 				<textarea
 					className='border rounded outline-none p-2'
 					name='case_details'
@@ -168,13 +204,13 @@ function AddExperience({ setShowModal }) {
 			)}
 			<button
 				type='submit'
-				disabled={isLoading}
+				disabled={editing}
 				className='rounded border border-green-500 flex justify-center text-green-500 py-1 px-2'
 			>
-				{isLoading ? <CgSpinner className='animate-spin m-auto' /> : 'Save'}
+				{editing ? <CgSpinner className='animate-spin m-auto' /> : 'Save'}
 			</button>
 		</form>
 	)
 }
 
-export default AddExperience
+export default EditExperience

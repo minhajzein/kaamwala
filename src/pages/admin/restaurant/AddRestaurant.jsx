@@ -187,6 +187,13 @@ const AddRestaurant = ({ handleClose }) => {
 							onChange={value => formik.setFieldValue('location_id', value)}
 							placeholder='Select Location'
 							className='w-full'
+							showSearch
+							optionFilterProp='children'
+							filterOption={(input, option) =>
+								option.props.children
+									.toLowerCase()
+									.indexOf(input.toLowerCase()) >= 0
+							}
 						>
 							{locations?.locations.map(loc => (
 								<Option value={loc.id}>{loc.location}</Option>

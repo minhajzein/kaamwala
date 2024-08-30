@@ -49,8 +49,8 @@ const AddAreaManager = ({ handleClose }) => {
 	return (
 		<div className='text-black'>
 			<form onSubmit={formik.handleSubmit} className=''>
-				<div className='grid grid-cols-2 gap-4'>
-					<div className='mb-4'>
+				<div className='grid grid-cols-2 gap-2'>
+					<div>
 						<label
 							htmlFor='name'
 							className='block text-gray-700 text-sm font-medium mb-1'
@@ -74,8 +74,7 @@ const AddAreaManager = ({ handleClose }) => {
 							</p>
 						)}
 					</div>
-
-					<div className='mb-4'>
+					<div>
 						<label
 							htmlFor='phone'
 							className='block text-gray-700 text-sm font-medium mb-1'
@@ -99,8 +98,7 @@ const AddAreaManager = ({ handleClose }) => {
 							</p>
 						)}
 					</div>
-
-					<div className='mb-4'>
+					<div>
 						<label
 							htmlFor='email'
 							className='block text-gray-700 text-sm font-medium mb-1'
@@ -125,7 +123,7 @@ const AddAreaManager = ({ handleClose }) => {
 						)}
 					</div>
 
-					<div className='mb-4'>
+					<div>
 						<label
 							htmlFor='location'
 							className='block text-gray-700 text-sm font-medium mb-1'
@@ -136,6 +134,14 @@ const AddAreaManager = ({ handleClose }) => {
 							onChange={value => formik.setFieldValue('location_id', value)}
 							placeholder='Select Location'
 							className='w-full'
+							showSearch
+							optionFilterProp='children'
+							filterOption={(input, option) =>
+								option.props.children
+									.toLowerCase()
+									.indexOf(input.toLowerCase()) >= 0
+							}
+							size='large'
 						>
 							{locations?.locations.map(loc => (
 								<Select.Option value={loc.id}>{loc.location}</Select.Option>
@@ -147,7 +153,7 @@ const AddAreaManager = ({ handleClose }) => {
 							</p>
 						)}
 					</div>
-					<div className='mb-4'>
+					<div>
 						<label
 							htmlFor='address'
 							className='block text-gray-700 text-sm font-medium mb-1'

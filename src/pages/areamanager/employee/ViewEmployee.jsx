@@ -29,7 +29,11 @@ const ViewEmployee = () => {
 				<div className='grid grid-cols-1 lg:grid-cols-[1fr,3fr,2fr] gap-4'>
 					<div className='rounded-md'>
 						<img
-							src={data?.employees?.photo}
+							src={
+								data?.employees?.photo === 'null'
+									? '/Images/avatar.jpg'
+									: data?.employees?.photo
+							}
 							className='rounded-md w-48 p-2 border-2'
 							alt=''
 						/>
@@ -72,10 +76,12 @@ const ViewEmployee = () => {
 							</div>
 							<div className='flex gap-2 items-center'>
 								<MdOutlineWatchLater />
-								{data?.employees.restaurants.reduce(
-									(acc, cur) => (acc += Number(cur.total_experience)),
-									0
-								)}{' '}
+								{data?.employees.restaurants
+									.reduce(
+										(acc, cur) => (acc += Number(cur.total_experience)),
+										0
+									)
+									.toFixed()}{' '}
 								years of experience
 							</div>
 							<div className='flex gap-2 items-center'>

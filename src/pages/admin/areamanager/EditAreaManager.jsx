@@ -194,7 +194,7 @@ const EditAreaManager = ({ handleClose, areaManager }) => {
 							id='location_name'
 						>
 							{locations?.locations.map(loc => (
-								<Option value={loc.id}>{loc.location}</Option>
+								<Select.Option value={loc.id}>{loc.location}</Select.Option>
 							))}
 						</Select>
 						{formik.touched.location && formik.errors.location && (

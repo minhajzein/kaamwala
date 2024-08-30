@@ -13,11 +13,11 @@ import getBase64 from '../../../utils/convertToBase64'
 //imports..........................................................................................
 
 const validationSchema = Yup.object().shape({
-	photo: Yup.mixed().required('Photo is required'),
-	aadhar_front: Yup.mixed().required('Adhar front is required'),
-	aadhar_back: Yup.mixed().required('Adhar back is required'),
+	photo: Yup.mixed(),
+	aadhar_front: Yup.mixed(),
+	aadhar_back: Yup.mixed(),
 	name: Yup.string().required('Name is required'),
-	job_category_id: Yup.string().required('Job is required'),
+	job_categories: Yup.array().required('Job is required'),
 	address: Yup.string().required('Address is required'),
 	location_id: Yup.string().required('Location is required'),
 	phone: Yup.string().required('Phone is required'),
@@ -27,19 +27,17 @@ const EditEmployee = ({ employee, handleClose }) => {
 	const { data: categories } = useGetAllCategoriesQuery()
 	const { data: locations } = useGetAllLocationsQuery()
 	const [updateAnEmployee, { isLoading }] = useEditEmployeeMutation()
-	console.log(employee)
 
 	const handleSubmit = async values => {
 		const response = await updateAnEmployee({
 			id: employee.id,
 			credentials: values,
 		})
-		console.log(response)
 		if (response?.data?.success) {
 			toast.success(response.data.success)
 			handleClose()
 		} else {
-			toast.error('Employee updation failed')
+			toast.error(response.error.error)
 		}
 	}
 
@@ -60,7 +58,7 @@ const EditEmployee = ({ employee, handleClose }) => {
 					aadhar_front: employee.aadhar_front,
 					aadhar_back: employee.aadhar_back,
 					name: employee.name,
-					job_category_id: employee.job_category_id,
+					job_categories: employee.job_categories,
 					address: employee.address,
 					location_id: employee.location_id,
 					phone: employee.phone,
@@ -171,18 +169,17 @@ const EditEmployee = ({ employee, handleClose }) => {
 								<label className='block text-sm font-medium text-gray-700'>
 									Job
 								</label>
-								<Field name='job_category_id'>
+								<Field name='job_categories'>
 									{({ field }) => (
 										<Select
-											name='job_category_id'
+											name='job_categories'
+											mode='multiple'
+											defaultValue={employee.job_categories}
 											className='w-full'
-											placeholder={employee.job_category}
-											onChange={value =>
-												setFieldValue('job_category_id', value)
-											}
+											onChange={value => setFieldValue('job_categories', value)}
 										>
 											{categories?.jobCategories.map(category => (
-												<Select.Option value={category.id}>
+												<Select.Option value={category.category}>
 													{category.category}
 												</Select.Option>
 											))}
@@ -190,7 +187,7 @@ const EditEmployee = ({ employee, handleClose }) => {
 									)}
 								</Field>
 								<ErrorMessage
-									name='job_category_id'
+									name='job_categories'
 									component='div'
 									className='text-red-500 text-xs mt-1'
 								/>
@@ -221,7 +218,7 @@ const EditEmployee = ({ employee, handleClose }) => {
 										<Select
 											name='location_id'
 											className='w-full'
-											placeholder={employee.location_name}
+											defaultValue={employee.location_name}
 											onChange={value => setFieldValue('location_id', value)}
 										>
 											{locations?.locations.map(loc => (

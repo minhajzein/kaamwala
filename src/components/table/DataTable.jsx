@@ -84,6 +84,7 @@ const DataTable = ({
 				!filterColumn2 || // Handle undefined filterColumn2 gracefully
 				filterValue2 === '' ||
 				item?.[filterColumn2]
+					.flat()
 					?.toString()
 					.toLowerCase()
 					.includes(filterValue2.toLowerCase())
@@ -118,7 +119,7 @@ const DataTable = ({
 
 	useEffect(() => {
 		setPageSize(itemsPerPage)
-	}, [setPageSize, itemsPerPage])
+	}, [itemsPerPage])
 
 	useEffect(() => {
 		gotoPage(0)
@@ -209,7 +210,7 @@ const DataTable = ({
 		}
 
 		// Define document metadata
-		const heading = `Zain Sales Corporation ${title} Report`
+		const heading = `Kaamwala ${title} Report`
 
 		// Set background color
 		doc.setFillColor(0, 0, 0) // Light grey background
@@ -381,13 +382,13 @@ const DataTable = ({
 							className='bg-beige-200 appearance-none md:px-3 w-full px-1  py-1 md:pr-8 border text-gray-800 border-gray-500 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-xs md:text-sm'
 						>
 							<option value=''>Filter {formatText(filterColumn2)}</option>
-							{[...new Set(data?.map(item => item?.[filterColumn2]))].map(
-								(value, index) => (
-									<option key={index} value={value}>
-										{value}
-									</option>
-								)
-							)}
+							{[
+								...new Set(data?.map(item => item?.[filterColumn2]).flat()),
+							].map((value, index) => (
+								<option key={index} value={value}>
+									{value}
+								</option>
+							))}
 						</select>
 						<div className='absolute inset-y-0 right-0 flex items-center px-2 pr-3 pointer-events-none'>
 							<FaChevronDown className='text-gray-600 text-xs md:text-sm' />
@@ -408,7 +409,6 @@ const DataTable = ({
 										<MdOutlineDownloading className='h-4 w-4 ' />
 									)}
 								</span>
-								{/* <span>{isOpen ? <FaTimes /> : <FaChevronDown />}</span> */}
 							</button>
 							{isOpen && (
 								<div className='absolute top-12 right-0 bg-white border border-gray-300 rounded-lg shadow-lg mt-2 w-48 '>

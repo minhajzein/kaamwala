@@ -7,7 +7,7 @@ const convertPathname = pathname => {
 		? pathname.slice(0, -1)
 		: pathname
 	const convertedPathname = trimmedPathname.split('/').join(' > ')
-	return convertedPathname
+	return convertedPathname.slice(2, convertedPathname.length)
 }
 
 const Navbar = ({ type }) => {

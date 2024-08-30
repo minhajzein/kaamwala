@@ -5,7 +5,6 @@ import { Button, Modal } from 'antd'
 import './JobPortal.css'
 import ViewStaffs from '../admin/staffs/ViewStaffs'
 import { useGetAllEmployeesInWebQuery } from '../../redux/api-slices/kaamwalaApiSlice'
-import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 //imports..........................................................................................
@@ -21,29 +20,37 @@ const JobPortal = () => {
 	const [showModal, setShowModal] = useState(false)
 	const [currentEmp, setCurrentEmp] = useState(null)
 
-	useEffect(() => {
+	const handleSearch = value => {
+		setVisibleCount(10) // Reset visible count on new value
 		const jobs = data?.employees.filter(
 			job =>
-				job.job_category.toLowerCase().includes(search.toLowerCase()) &&
-				(jobFilter ? job.job_category === jobFilter : true) &&
-				(locationFilter ? job.location_name === locationFilter : true)
-		)
-		setFilteredJobs(jobs)
-		setShownJobs(jobs?.slice(0, visibleCount))
-	}, [jobFilter, isSuccess, locationFilter, visibleCount])
-
-	const jobOptions = [...new Set(data?.employees?.map(job => job.job_category))]
-	const locationOptions = [
-		...new Set(data?.employees.map(job => job.location_name)),
-	]
-
-	const handleSearch = search => {
-		setVisibleCount(10) // Reset visible count on new search
-		const jobs = data?.employees.filter(job =>
-			job.employee_code.toLowerCase().includes(search.toLowerCase())
+				job.employee_code.toLowerCase().includes(value.toLowerCase()) ||
+				job.name.toLowerCase().includes(value.toLowerCase()) ||
+				job.location_name.toLowerCase().includes(value.toLowerCase())
 		)
 		setShownJobs(jobs?.slice(0, 20))
 	}
+
+	useEffect(() => {
+		if (search !== '') {
+			handleSearch(search)
+		} else {
+			const jobs = data?.employees.filter(
+				job =>
+					(jobFilter ? job.job_categories === jobFilter : true) &&
+					(locationFilter ? job.location_name === locationFilter : true)
+			)
+			setFilteredJobs(jobs)
+			setShownJobs(jobs?.slice(0, visibleCount))
+		}
+	}, [search, jobFilter, isSuccess, locationFilter, visibleCount])
+
+	const jobOptions = [
+		...new Set(data?.employees?.map(job => job.job_categories).flat()),
+	]
+	const locationOptions = [
+		...new Set(data?.employees.map(job => job.location_name)),
+	]
 
 	const loadMore = () => {
 		setShownJobs(filteredJobs?.slice(0, visibleCount + 10))
@@ -67,14 +74,13 @@ const JobPortal = () => {
 				setLocationFilter={setLocationFilter}
 				jobOptions={jobOptions}
 				locationOptions={locationOptions}
-				onSearch={handleSearch}
 			/>
 			{filteredJobs?.length > 0 ? (
 				<div className='w-full'>
 					<h1 className='text-center p-2 md:pt-4 italic'>
 						Showing {shownJobs.length} of {filteredJobs.length} employees
 					</h1>
-					<div className='md:gap-4 gap-2 p-2 md:p-4 grid grid-cols1 md:grid-cols-4'>
+					<div className='md:gap-4 gap-2 p-2 md:p-4 grid grid-cols1 md:grid-cols-3'>
 						{shownJobs.map(job => (
 							<JobCard
 								job={job}
