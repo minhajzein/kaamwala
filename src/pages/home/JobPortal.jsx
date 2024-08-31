@@ -25,6 +25,8 @@ const JobPortal = () => {
 		const jobs = data?.employees.filter(
 			job =>
 				job.employee_code.toLowerCase().includes(value.toLowerCase()) ||
+				job.job_categories.filter(x => x.toLowerCase().includes(value))
+					.length !== 0 ||
 				job.name.toLowerCase().includes(value.toLowerCase()) ||
 				job.location_name.toLowerCase().includes(value.toLowerCase())
 		)
@@ -37,7 +39,9 @@ const JobPortal = () => {
 		} else {
 			const jobs = data?.employees.filter(
 				job =>
-					(jobFilter ? job.job_categories === jobFilter : true) &&
+					(jobFilter
+						? job.job_categories.filter(x => x === jobFilter).length !== 0
+						: true) &&
 					(locationFilter ? job.location_name === locationFilter : true)
 			)
 			setFilteredJobs(jobs)

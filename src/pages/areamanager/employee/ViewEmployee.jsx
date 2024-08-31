@@ -1,7 +1,7 @@
 import { GoDotFill } from 'react-icons/go'
 import { MdMyLocation, MdOutlineWatchLater, MdSmartphone } from 'react-icons/md'
 import { IoLocation } from 'react-icons/io5'
-import { Modal, Rate } from 'antd'
+import { Modal } from 'antd'
 import { FaGraduationCap } from 'react-icons/fa'
 import JobExperienceTimeline from '../../../components/common/JobExperienseTimeline'
 import { useState } from 'react'
@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom'
 import { useGetSingleEmployeeUnderAreaManagerQuery } from '../../../redux/area-manager/api-slices/employeeApiSlice'
 import { CgSpinner } from 'react-icons/cg'
 import AverageRating from './AverageRating'
+import { HiringStatus } from '../../../components/table/Columns/StaffColumns'
 
 //imports.................................................................................................
 
@@ -35,40 +36,27 @@ const ViewEmployee = () => {
 									: data?.employees?.photo
 							}
 							className='rounded-md w-48 p-2 border-2'
-							alt=''
+							alt='photo'
 						/>
 					</div>
 					<div className='p-2'>
 						<div className='flex flex-col lg:flex-row justify-between'>
-							<div className='py-2'>
+							<div className='py-2 flex flex-col gap-2'>
 								<div className='text-2xl capitalize'>
 									{data?.employees?.name}
 								</div>
-								<div className='text-gray-600 capitalize'>
-									{data?.employees?.job_category}
-								</div>{' '}
-								{data?.employees?.status === '1' ? (
-									<div className='text-orange-400 flex gap-1 items-center '>
-										<GoDotFill />
-										Working
-									</div>
-								) : data?.employees?.status === '2' ? (
-									<div className='text-green-500 flex gap-1 items-center '>
-										<GoDotFill />
-										Available for hiring
-									</div>
-								) : (
-									<div className='text-red-500 flex gap-1 items-center'>
-										<GoDotFill />
-										Blacklisted
-									</div>
-								)}
+								<HiringStatus hiringStatus={data?.employees?.status} />
+								<div className='text-gray-600 capitalize list-inside'>
+									{data?.employees?.job_categories?.map((category, i) => (
+										<li key={i}>{category}</li>
+									))}
+								</div>
 							</div>
 						</div>
 						<div className='grid grid-cols-1 sm:grid-cols-2 gap-2 w-full pt-4 text-gray-600'>
 							<div className='flex gap-2 items-center'>
 								<MdMyLocation />
-								Palazhi
+								{data?.employees?.location_name}
 							</div>
 							<div className='flex gap-2 items-center'>
 								<IoLocation />
@@ -90,7 +78,7 @@ const ViewEmployee = () => {
 							</div>
 						</div>
 					</div>
-					<div className='mt-2 flex flex-col justify-between items-center gap-3'>
+					<div className='mt-2 flex flex-col justify-between items-end gap-3'>
 						<button
 							onClick={() => setShowModal(true)}
 							className='capitalize border rounded h-10 text-sm px-2 text-white border-white bg-blue-500'
@@ -113,6 +101,7 @@ const ViewEmployee = () => {
 			<Modal
 				open={showModal}
 				footer={[]}
+				title='Add Experience'
 				closeIcon={true}
 				onCancel={() => setShowModal(false)}
 			>

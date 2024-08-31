@@ -57,9 +57,9 @@ const AddEmployee = ({ handleClose }) => {
 		<div className='flex flex-col rounded-lg'>
 			<Formik
 				initialValues={{
-					photo: null,
-					aadhar_front: null,
-					aadhar_back: null,
+					photo: '',
+					aadhar_front: '',
+					aadhar_back: '',
 					name: '',
 					job_categories: [],
 					address: '',

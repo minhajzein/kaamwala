@@ -13,9 +13,9 @@ import getBase64 from '../../../utils/convertToBase64'
 //imports..........................................................................................
 
 const validationSchema = Yup.object().shape({
-	photo: Yup.mixed(),
-	aadhar_front: Yup.mixed(),
-	aadhar_back: Yup.mixed(),
+	photo: Yup.string(),
+	aadhar_front: Yup.string(),
+	aadhar_back: Yup.string(),
 	name: Yup.string().required('Name is required'),
 	job_categories: Yup.array().required('Job is required'),
 	address: Yup.string().required('Address is required'),
@@ -50,13 +50,20 @@ const EditEmployee = ({ employee, handleClose }) => {
 		}
 	}
 
+	const converToInitialValue = url => {
+		if (url !== 'null' && url !== null) {
+			const array = url.split('/')
+			return `${array[array.length - 2]}/${array[array.length - 1]}`
+		} else return ''
+	}
+
 	return (
 		<div className='flex flex-col overflow-y-auto rounded-lg'>
 			<Formik
 				initialValues={{
-					photo: employee.photo,
-					aadhar_front: employee.aadhar_front,
-					aadhar_back: employee.aadhar_back,
+					photo: converToInitialValue(employee.photo),
+					aadhar_front: converToInitialValue(employee.aadhar_front),
+					aadhar_back: converToInitialValue(employee.aadhar_back),
 					name: employee.name,
 					job_categories: employee.job_categories,
 					address: employee.address,
@@ -81,6 +88,15 @@ const EditEmployee = ({ employee, handleClose }) => {
 										<Upload
 											name='photo'
 											maxCount={1}
+											defaultFileList={[
+												{
+													uid: '0',
+													name: 'photo.jpg',
+													status: 'done',
+													url: employee?.photo,
+													thumbUrl: employee?.photo,
+												},
+											]}
 											listType='picture'
 											beforeUpload={() => false}
 											onChange={async info => {
@@ -105,6 +121,15 @@ const EditEmployee = ({ employee, handleClose }) => {
 									{() => (
 										<Upload
 											name='aadhar_front'
+											defaultFileList={[
+												{
+													uid: '0',
+													name: 'aadhar_front.jpg',
+													status: 'done',
+													url: employee?.aadhar_front,
+													thumbUrl: employee?.aadhar_front,
+												},
+											]}
 											maxCount={1}
 											listType='picture'
 											beforeUpload={() => false}
@@ -133,6 +158,15 @@ const EditEmployee = ({ employee, handleClose }) => {
 											name='aadhar_back'
 											maxCount={1}
 											listType='picture'
+											defaultFileList={[
+												{
+													uid: '0',
+													name: 'aadhar_back.jpg',
+													status: 'done',
+													url: employee?.aadhar_back,
+													thumbUrl: employee?.aadhar_back,
+												},
+											]}
 											beforeUpload={() => false}
 											onChange={async info => {
 												setFieldValue('aadhar_back', await toBase64(info.file))

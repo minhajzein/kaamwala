@@ -76,10 +76,7 @@ function AddExperience({ setShowModal }) {
 	}
 
 	return (
-		<form
-			onSubmit={formik.handleSubmit}
-			className='w-full flex flex-col gap-2 mt-6'
-		>
+		<form onSubmit={formik.handleSubmit} className='w-full flex flex-col gap-2'>
 			<div className='flex flex-col'>
 				<Select
 					placeholder='Select a Restaurant'

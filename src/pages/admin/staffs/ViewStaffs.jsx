@@ -6,9 +6,9 @@ import JobExperienceTimeline from '../../../components/common/JobExperienseTimel
 import { HiringStatus } from '../../../components/table/Columns/StaffColumns'
 import { PiAddressBookLight } from 'react-icons/pi'
 import AverageRating from '../../areamanager/employee/AverageRating'
-import { useGetSingleEmployeeQuery } from '../../../redux/admin/api-slices/employeeApiSlice'
 import { useParams } from 'react-router-dom'
 import { CgSpinner } from 'react-icons/cg'
+import { useGetSingleEmployeeQuery } from '../../../redux/admin/api-slices/employeeApiSlice'
 
 //imports................................................................
 
@@ -36,9 +36,11 @@ const ViewStaffs = ({ employee }) => {
 								<div className='text-3xl font-semibold capitalize'>
 									{employee?.name}
 								</div>
-								<div className='text-gray-600 capitalize'>
-									{employee?.job_category}
-								</div>
+								<ul className='text-gray-600 capitalizel list-disc list-inside'>
+									{employee?.job_categories.map((category, i) => (
+										<li key={i}>{category}</li>
+									))}
+								</ul>
 							</div>
 						</div>
 						<HiringStatus hiringStatus={employee?.status} />
