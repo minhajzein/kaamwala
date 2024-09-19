@@ -9,6 +9,7 @@ import { CgSpinner } from 'react-icons/cg'
 import TextArea from 'antd/es/input/TextArea'
 import { toast } from 'react-toastify'
 import getBase64 from '../../../utils/convertToBase64'
+import { useGetAllMainCategoriesQuery } from '../../../redux/admin/api-slices/mainCategoryApiSlice'
 
 //imports..........................................................................................
 
@@ -25,8 +26,10 @@ const validationSchema = Yup.object().shape({
 
 const EditEmployee = ({ employee, handleClose }) => {
 	const { data: categories } = useGetAllCategoriesQuery()
+	const { data: mainCategories } = useGetAllMainCategoriesQuery()
 	const { data: locations } = useGetAllLocationsQuery()
 	const [updateAnEmployee, { isLoading }] = useEditEmployeeMutation()
+	console.log(employee)
 
 	const handleSubmit = async values => {
 		const response = await updateAnEmployee({
@@ -71,6 +74,7 @@ const EditEmployee = ({ employee, handleClose }) => {
 					phone: employee.phone,
 					status: employee.status,
 					case_details: employee.case_details,
+					main_job_category_id: employee?.main_job_category_id,
 				}}
 				enableReinitialize:true
 				validationSchema={validationSchema}
@@ -198,10 +202,44 @@ const EditEmployee = ({ employee, handleClose }) => {
 									className='text-red-500 text-xs mt-1'
 								/>
 							</div>
-
 							<div>
 								<label className='block text-sm font-medium text-gray-700'>
-									Job
+									Main Category
+								</label>
+								<Field name='job_categories'>
+									{({ field }) => (
+										<Select
+											name='job_categories'
+											className='w-full'
+											placeholder='Select candidate level'
+											onChange={value =>
+												setFieldValue('main_job_category_id', value)
+											}
+											defaultValue={employee?.main_category}
+											showSearch
+											size='large'
+											optionFilterProp='children'
+											filterOption={(input, option) =>
+												option.props.children
+													.toLowerCase()
+													.indexOf(input.toLowerCase()) >= 0
+											}
+										>
+											{mainCategories?.jobCategories.map(category => (
+												<Option value={category.id}>{category.category}</Option>
+											))}
+										</Select>
+									)}
+								</Field>
+								<ErrorMessage
+									name='job_categories'
+									component='div'
+									className='text-red-500 text-xs mt-1'
+								/>
+							</div>
+							<div>
+								<label className='block text-sm font-medium text-gray-700'>
+									Job Category
 								</label>
 								<Field name='job_categories'>
 									{({ field }) => (

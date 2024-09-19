@@ -5,16 +5,21 @@ import {
 	MdSmartphone,
 } from 'react-icons/md'
 import { IoLocation } from 'react-icons/io5'
-import { FaGraduationCap, FaRegUser } from 'react-icons/fa'
-import EmployeeCard from '../../../components/common/EmployeeCard'
+import { FaRegUser } from 'react-icons/fa'
 import { useParams } from 'react-router-dom'
 import { useGetSingleRestaurantQuery } from '../../../redux/admin/api-slices/restaurantApiSlice'
+import { SiGoogleadsense } from 'react-icons/si'
+import { Modal } from 'antd'
+import { useState } from 'react'
+import AddNewAd from './AddNewAd'
+import AdCard from './AdCard'
 
 //imports.....................................................................................
 
 const RestaurantProfile = () => {
 	const { id } = useParams()
 	const { data } = useGetSingleRestaurantQuery(id)
+	const [isModalOpen, setIsModalOpen] = useState(false)
 
 	return (
 		<div className='p-5'>
@@ -57,41 +62,36 @@ const RestaurantProfile = () => {
 				</div>
 			</div>
 			<div className='bg-white border rounded-sm p-4 mt-4'>
-				<div className='flex gap-2 items-center mb-5'>
-					<FaGraduationCap />
-					Employees
+				<div className='flex gap-2 justify-between items-center mb-5'>
+					<h1 className='flex items-center gap-2'>
+						<SiGoogleadsense />
+						Ads
+					</h1>
+					<button
+						onClick={() => setIsModalOpen(true)}
+						className='bg-blue-500 text-white py-2 px-3 rounded-lg text-xs'
+					>
+						Add new ad
+					</button>
 				</div>
-				<div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
-					{data?.employees.map(exp => (
-						<div
-							key={exp.employee.id}
-							className='bg-white flex w-full h-full flex-col p-2 rounded-md border shadow-md max-w-md mx-auto cursor-pointer ease-in duration-300'
-						>
-							<div className='flex flex-col md:flex-row items-center md:items-start'>
-								<img
-									src={exp.employee.photo}
-									className='rounded-full w-24 h-24 md:w-28 md:h-28 border-2 p-2'
-									alt='Avatar'
-								/>
-								<div className='p-2'>
-									<h1 className='text-lg font-normal capitalize'>
-										{exp.employee.name}
-									</h1>
-									<h2 className='text-gray-600 text-sm capitalize'>
-										{exp.employee.job_category_name}
-									</h2>
-									<div className='mt-2 text-gray-600'>
-										<div className='flex items-center gap-2 text-blue-500'>
-											<MdSmartphone />
-											{exp.employee.phone}
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
+				<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+					{data?.ads.map(ad => (
+						<AdCard key={ad.id} ad={ad} />
 					))}
 				</div>
 			</div>
+			<Modal
+				title='Add new Ad'
+				open={isModalOpen}
+				onCancel={() => setIsModalOpen(false)}
+				footer={[]}
+			>
+				<AddNewAd
+					restaurantId={data?.restaurent.id}
+					location={data?.restaurent.location_name}
+					setIsShow={setIsModalOpen}
+				/>
+			</Modal>
 		</div>
 	)
 }

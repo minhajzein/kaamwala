@@ -27,6 +27,9 @@ const JobCard = ({ job, onClick }) => {
 				/>
 				<div className='flex flex-col gap-1'>
 					<div className='flex flex-col'>
+						<h1 className='italic text-gray-500 font-semibold'>
+							{job.main_category} in
+						</h1>
 						<ul className='font-bold capitalize text-sm underline'>
 							{job.job_categories?.map((category, id) => (
 								<li key={id}>{category}</li>

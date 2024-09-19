@@ -12,9 +12,41 @@ const kaamwalaApiSlice = apiSlice.injectEndpoints({
                 }
             }),
             keepUnusedDataFor: 5
+        }),
+        getAllAds: builder.query({
+            query: () => ({
+                url: '/restaurant/ads',
+                validateStatus: (response) => {
+                    return response.status === 200
+                }
+            }),
+            keepUnusedDataFor: 5
+        }),
+        getOneAd: builder.query({
+            query: (id) => ({
+                url: `/restaurant/ads/${id}`,
+                validateStatus: (response) => {
+                    return response.status === 200
+                }
+            }),
+            keepUnusedDataFor: 5
+        }),
+        getAdsLocationWise: builder.query({
+            query: (location) => ({
+                url: `/restaurant/ads/location/${location}`,
+                validateStatus: (response) => {
+                    return response.status === 200
+                }
+            }),
+            keepUnusedDataFor: 5
         })
     })
 })
 
 
-export const { useGetAllEmployeesInWebQuery } = kaamwalaApiSlice
+export const {
+    useGetAllEmployeesInWebQuery,
+    useGetAllAdsQuery,
+    useGetOneAdQuery,
+    useGetAdsLocationWiseQuery
+} = kaamwalaApiSlice

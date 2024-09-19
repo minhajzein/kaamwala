@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { CgSpinner } from 'react-icons/cg'
 
-//imports................................................................
+//imports.................................................................
 
-const JobCategoryForm = ({ initialData, onSubmit, isLoading, onCancel }) => {
-	const [name, setName] = useState(initialData?.category || '')
+function MainCategoryForm({ initialData, onSubmit, isLoading, onCancel }) {
+	const [category, setCategory] = useState(initialData?.category || '')
 
 	const handleSubmit = e => {
 		e.preventDefault()
-		const formData = { ...initialData, category: name }
+		const formData = { ...initialData, category: category }
 		onSubmit(formData)
 	}
 
@@ -17,15 +17,15 @@ const JobCategoryForm = ({ initialData, onSubmit, isLoading, onCancel }) => {
 			<div className='mb-4'>
 				<label
 					className='block text-gray-700 text-sm font-bold mb-2'
-					htmlFor='name'
+					htmlFor='category'
 				>
-					Job Category
+					Main Category
 				</label>
 				<input
 					type='text'
-					id='name'
-					value={name}
-					onChange={e => setName(e.target.value)}
+					id='category'
+					value={category}
+					onChange={e => setCategory(e.target.value)}
 					className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
 					placeholder='Enter job category'
 					required
@@ -51,4 +51,4 @@ const JobCategoryForm = ({ initialData, onSubmit, isLoading, onCancel }) => {
 	)
 }
 
-export default JobCategoryForm
+export default MainCategoryForm

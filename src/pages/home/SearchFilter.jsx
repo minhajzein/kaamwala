@@ -1,5 +1,7 @@
 import { Select, Input, Button } from 'antd'
 import { CiSearch } from 'react-icons/ci'
+import { IoGiftSharp } from 'react-icons/io5'
+import { Link } from 'react-router-dom'
 const { Option } = Select
 
 //imports................................................................................................................................
@@ -16,11 +18,21 @@ const SearchFilter = ({
 }) => {
 	return (
 		<div className="bg-[url('/Images/kaamwala.jpg')] flex flex-col gap-4 md:px-14 bg-cover bg-center w-full p-2">
-			<img
-				src='/Images/logo.png'
-				className='md:w-1/6 rounded-lg w-1/3 object-contain'
-				alt='logo'
-			/>
+			<div className='w-full flex justify-between'>
+				<img
+					src='/Images/logo.png'
+					className='md:w-1/6 rounded-lg w-1/3 object-contain'
+					alt='logo'
+				/>
+				<Link
+					to='/offer-zone'
+					className='flex gap-1 justify-center items-center bg-slate-100 px-3 rounded-lg capitalize'
+				>
+					<IoGiftSharp />
+					<h1>offer zone</h1>
+				</Link>
+			</div>
+
 			<div className='flex flex-col'>
 				<h1 className='md:text-3xl text-lg text-primary-50 font-bold'>
 					Find Your Perfect Employee

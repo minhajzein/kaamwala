@@ -33,7 +33,10 @@ const apiSlice = createApi({
         'Locations',
         'Job-Category',
         'Area-Managers',
-        'Employee'
+        'Employee',
+        'Main-Categories',
+        'Ads',
+        'Single-Restaurant'
     ],
     endpoints: builder => ({})
 })

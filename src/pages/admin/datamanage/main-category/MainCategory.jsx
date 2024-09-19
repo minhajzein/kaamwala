@@ -1,20 +1,20 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { BiEdit, BiSearch } from 'react-icons/bi'
-import JobCategoryForm from './JobCategoryForm'
-import Modal from '../../../../components/Modal'
 import {
-	useAddJobCategoryMutation,
-	useEditJobCategoryMutation,
-	useGetAllCategoriesQuery,
-} from '../../../../redux/admin/api-slices/categoryApiSlice'
+	useAddMainCategoryMutation,
+	useEditMainCategoryMutation,
+	useGetAllMainCategoriesQuery,
+} from '../../../../redux/admin/api-slices/mainCategoryApiSlice'
+import MainCategoryForm from './MainCategoryForm'
+import Modal from '../../../../components/Modal'
 import { toast } from 'react-toastify'
 
 //imports................................................................
 
-const JobCategory = () => {
-	const { data } = useGetAllCategoriesQuery()
-	const [addCategory, { isLoading: adding }] = useAddJobCategoryMutation()
-	const [editCategory, { isLoading: updating }] = useEditJobCategoryMutation()
+function MainCategory() {
+	const { data } = useGetAllMainCategoriesQuery()
+	const [addCategory, { isLoading: adding }] = useAddMainCategoryMutation()
+	const [editCategory, { isLoading: updating }] = useEditMainCategoryMutation()
 	const [currentPage, setCurrentPage] = useState(1)
 	const [itemsPerPage] = useState(10)
 	const [modalVisible, setModalVisible] = useState(false)
@@ -48,12 +48,15 @@ const JobCategory = () => {
 
 	const handleSubmit = async data => {
 		if (currentItem) {
-			const response = await editCategory(data)
+			const response = await editCategory({
+				id: data.id,
+				credentials: { category: data.category },
+			})
 			if (response?.data?.success) {
 				setModalVisible(false)
 				return toast.success(response.data.success)
 			} else {
-				return toast.error('Failed to edit category')
+				return toast.error('Failed to edit Main category')
 			}
 		} else {
 			const response = await addCategory(data)
@@ -61,7 +64,7 @@ const JobCategory = () => {
 				setModalVisible(false)
 				return toast.success(response.data.success)
 			} else {
-				return toast.error(response.error.data.errors.category[0])
+				return toast.error('Failed to add Main category')
 			}
 		}
 	}
@@ -73,7 +76,7 @@ const JobCategory = () => {
 	return (
 		<div className='flex flex-col gap-2 md:p-6 w-full'>
 			<div className='flex flex-col gap-2 md:flex-row w-full justify-between items-center'>
-				<h2 className='md:text-2xl font-semibold'>Job Category Management</h2>
+				<h2 className='md:text-2xl font-semibold'>Main Category Management</h2>
 				<div className='flex w-full md:w-auto items-center gap-2 md:gap-4'>
 					<div className='flex items-center md:w-auto w-[80%]  border rounded-md md:px-3 p-1 md:py-2 bg-white'>
 						<BiSearch className='text-gray-500' />
@@ -138,11 +141,11 @@ const JobCategory = () => {
 			{modalVisible && (
 				<Modal
 					visibles={modalVisible}
-					id={'add-job-category'}
+					id={'add-main-category'}
 					onClose={handleClose}
-					title={currentItem ? 'Edit Job Category' : 'Add Job Category'}
+					title={currentItem ? 'Edit Main Category' : 'Add Main Category'}
 					content={
-						<JobCategoryForm
+						<MainCategoryForm
 							initialData={currentItem}
 							onSubmit={handleSubmit}
 							onCancel={handleClose}
@@ -155,4 +158,4 @@ const JobCategory = () => {
 	)
 }
 
-export default JobCategory
+export default MainCategory

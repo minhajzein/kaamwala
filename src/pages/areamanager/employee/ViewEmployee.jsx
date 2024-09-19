@@ -25,60 +25,61 @@ const ViewEmployee = () => {
 			<CgSpinner className='m-auto animate-spin' />
 		</div>
 	) : (
-		<div className='md:p-5'>
-			<div className='bg-white p-5 rounded-md border'>
-				<div className='grid grid-cols-1 lg:grid-cols-[1fr,3fr,2fr] gap-4'>
-					<div className='rounded-md'>
+		<div className='md:p-5 w-full'>
+			<div className='bg-white w-full p-5 rounded-md border'>
+				<div className='flex flex-col justify-between gap-2 w-full md:flex-row'>
+					<div className='rounded-md md:w-1/5'>
 						<img
 							src={
 								data?.employees?.photo === 'null'
 									? '/Images/avatar.jpg'
 									: data?.employees?.photo
 							}
-							className='rounded-md w-48 p-2 border-2'
+							className='rounded-md max-w-full max-h-48 p-1 border-2'
 							alt='photo'
 						/>
 					</div>
-					<div className='p-2'>
-						<div className='flex flex-col lg:flex-row justify-between'>
-							<div className='py-2 flex flex-col gap-2'>
-								<div className='text-2xl capitalize'>
-									{data?.employees?.name}
-								</div>
-								<HiringStatus hiringStatus={data?.employees?.status} />
-								<div className='text-gray-600 capitalize list-inside'>
+					<div className='flex flex-col md:w-2/5 md:px-2 gap-2'>
+						<div className='text-2xl capitalize'>{data?.employees?.name}</div>
+						<HiringStatus hiringStatus={data?.employees?.status} />
+						<div className='flex flex-col w-full lg:flex-row gap-2'>
+							<div className='py-2 flex flex-col gap-2 border p-2 rounded-lg'>
+								<h1 className='font-bold text-center'>
+									{data?.employees?.main_category} in
+								</h1>
+								<ul className='text-gray-600 capitalize list-inside'>
 									{data?.employees?.job_categories?.map((category, i) => (
 										<li key={i}>{category}</li>
 									))}
+								</ul>
+							</div>
+							<div className='flex flex-col gap-2 text-gray-600'>
+								<div className='flex gap-2 items-center'>
+									<MdMyLocation />
+									{data?.employees?.location_name}
+								</div>
+								<div className='flex gap-2 items-center'>
+									<IoLocation />
+									{data?.employees?.district}
+								</div>
+								<div className='flex gap-2 items-center'>
+									<MdOutlineWatchLater />
+									{data?.employees.restaurants
+										.reduce(
+											(acc, cur) => (acc += Number(cur.total_experience)),
+											0
+										)
+										.toFixed()}{' '}
+									years of experience
+								</div>
+								<div className='flex gap-2 items-center'>
+									<MdSmartphone />
+									{data?.employees?.phone}
 								</div>
 							</div>
 						</div>
-						<div className='grid grid-cols-1 sm:grid-cols-2 gap-2 w-full pt-4 text-gray-600'>
-							<div className='flex gap-2 items-center'>
-								<MdMyLocation />
-								{data?.employees?.location_name}
-							</div>
-							<div className='flex gap-2 items-center'>
-								<IoLocation />
-								{data?.employees?.district}
-							</div>
-							<div className='flex gap-2 items-center'>
-								<MdOutlineWatchLater />
-								{data?.employees.restaurants
-									.reduce(
-										(acc, cur) => (acc += Number(cur.total_experience)),
-										0
-									)
-									.toFixed()}{' '}
-								years of experience
-							</div>
-							<div className='flex gap-2 items-center'>
-								<MdSmartphone />
-								{data?.employees?.phone}
-							</div>
-						</div>
 					</div>
-					<div className='mt-2 flex flex-col justify-between items-end gap-3'>
+					<div className='mt-2 md:w-2/5 w-full flex flex-col justify-between items-end gap-3'>
 						<button
 							onClick={() => setShowModal(true)}
 							className='capitalize border rounded h-10 text-sm px-2 text-white border-white bg-blue-500'

@@ -27,6 +27,7 @@ const StaffColumns = (viewActionClick, editActionClick, deleteActionClick) => [
 	{ Header: 'ID', accessor: 'id' },
 	{ Header: 'EMP Code', accessor: 'employee_code' },
 	{ Header: 'Name', accessor: 'name' },
+	{ Header: 'Expertise', accessor: 'main_category' },
 	{
 		Header: 'Job Titles',
 		accessor: 'job_categories',

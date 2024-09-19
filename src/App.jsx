@@ -5,10 +5,9 @@ import 'react-toastify/dist/ReactToastify.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import AdminRoute from './routes/admin/AdminRoute'
 import AreaManagerRoute from './routes/areamanager/AreaManagerRoute'
-import Home from './pages/home/Home'
 import Login from './pages/login/Login'
 import PublicRoute from './routes/public/PublicRoute'
-import SingleEmployee from './pages/home/SingleEmployee'
+import HomeRoute from './routes/home/HomeRoute'
 
 //imports................................................................................................
 
@@ -32,8 +31,7 @@ const App = () => {
 				<Routes>
 					<Route path='/admin/*' element={<AdminRoute />} />
 					<Route path='/area-manager/*' element={<AreaManagerRoute />} />
-					<Route path='/*' element={<Home />} />
-					<Route path='/employee/:id' element={<SingleEmployee />} />
+					<Route path='/*' element={<HomeRoute />} />
 					<Route element={<PublicRoute />}>
 						<Route path='/login' element={<Login />} />
 					</Route>

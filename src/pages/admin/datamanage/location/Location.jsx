@@ -85,7 +85,7 @@ const Location = () => {
 						className='bg-blue-600 truncate text-white py-1 px-3 md:py-2 md:px-4 rounded-lg'
 					>
 						<span className='md:hidden'>+</span>{' '}
-						<span className='hidden md:block'>Add new loccation</span>
+						<span className='hidden md:block'>Add new</span>
 					</button>
 				</div>
 			</div>

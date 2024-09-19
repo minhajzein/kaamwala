@@ -26,17 +26,18 @@ const ViewStaffs = ({ employee }) => {
 			<div className='bg-white flex flex-col gap-2 p-2 md:p-4 rounded-md border'>
 				<div className='rounded-md w-full flex flex-col md:flex-row'>
 					<img
-						src={employee?.photo !== 'null' ? employee.photo : avatar}
+						src={employee?.photo !== 'null' ? employee?.photo : avatar}
 						className='rounded-md md:w-1/2 w-full p-2 border-2'
 						alt='avatar'
 					/>
 					<div className='md:w-1/2 w-full flex flex-col gap-3 justify-between p-2'>
 						<div className='flex flex-col justify-between'>
-							<div className='flex flex-col'>
+							<div className='flex flex-col gap-2'>
 								<div className='text-3xl font-semibold capitalize'>
 									{employee?.name}
 								</div>
-								<ul className='text-gray-600 capitalizel list-disc list-inside'>
+								<h1 className='italic'>{employee?.main_category} in</h1>
+								<ul className='text-gray-600 capitalizel list-inside'>
 									{employee?.job_categories.map((category, i) => (
 										<li key={i}>{category}</li>
 									))}
@@ -58,7 +59,7 @@ const ViewStaffs = ({ employee }) => {
 						</div>
 						<div className='flex gap-2 items-center'>
 							<MdOutlineWatchLater />
-							{employee.restaurants.reduce(
+							{employee?.restaurants.reduce(
 								(acc, cur) => (acc += Number(cur.total_experience)),
 								0
 							)}{' '}

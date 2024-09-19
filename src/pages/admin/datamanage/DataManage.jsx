@@ -3,6 +3,8 @@ import { FaMapMarkedAlt, FaBriefcase } from 'react-icons/fa'
 import Location from './location/Location'
 import JobCategory from './jobcategory/JobCategory'
 import Modal from '../../../components/Modal'
+import { IoMdBowtie } from 'react-icons/io'
+import MainCategory from './main-category/MainCategory'
 
 const DataManage = () => {
 	const [currentSection, setCurrentSection] = useState('Location')
@@ -21,6 +23,8 @@ const DataManage = () => {
 				return <Location />
 			case 'JobCategory':
 				return <JobCategory />
+			case 'mainCategory':
+				return <MainCategory />
 			default:
 				return <Location />
 		}
@@ -39,6 +43,20 @@ const DataManage = () => {
 				>
 					<FaMapMarkedAlt className='md:size-6 size-3' />
 					<span className='font-semibold text-sm md:text-xl'>Location</span>
+				</button>
+				<button
+					onClick={() => setCurrentSection('mainCategory')}
+					className={`flex items-center gap-2 px-5 py-3 rounded shadow-lg transition-all duration-300 focus:outline-none ${
+						currentSection === 'mainCategory'
+							? 'bg-blue-500 text-white'
+							: 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+					}`}
+				>
+					<IoMdBowtie className='md:size-6 size-3' />
+
+					<span className='font-semibold text-sm md:text-xl'>
+						Main Category
+					</span>
 				</button>
 				<button
 					onClick={() => setCurrentSection('JobCategory')}

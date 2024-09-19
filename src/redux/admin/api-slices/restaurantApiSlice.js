@@ -29,7 +29,8 @@ const restaurantApiSlice = apiSlice.injectEndpoints({
                     return response.status === 200
                 }
             }),
-            keepUnusedDataFor: 5
+            keepUnusedDataFor: 5,
+            providesTags: ['Single-Restaurant']
         }),
         editRestaurant: builder.mutation({
             query: (data) => ({
